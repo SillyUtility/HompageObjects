@@ -1,0 +1,10 @@
+#+TITLE: HomepageObjects
+#+DATE: 2021-03-02
+#+STARTUP: showall
+
+** About
+
+This was just a fleeting idea that will proably go nowhere. If I were
+to work on this it would become a framework for building homepages and
+blogs. Decided to push it to GitHub in the open, because I've been
+working on too many things in private repos.
