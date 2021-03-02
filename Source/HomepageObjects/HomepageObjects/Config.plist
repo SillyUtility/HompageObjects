@@ -1,0 +1,10 @@
+{
+    title = "site title";
+    baseURL = "https://base.tld";
+
+    siteDirectory = ".";
+    contentDirectory = content;
+    layoutDirectory = layouts;
+    templateDirectory = templates;
+    buildDirectory = build;
+}
