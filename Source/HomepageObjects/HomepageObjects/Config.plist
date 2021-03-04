@@ -1,7 +1,10 @@
+/* Default Config.plist */
 {
+    // basic site variables
     title = "site title";
     baseURL = "https://base.tld";
 
+    // directories
     siteDirectory = ".";
     contentDirectory = content;
     layoutDirectory = layouts;
