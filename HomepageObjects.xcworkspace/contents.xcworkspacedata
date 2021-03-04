@@ -5,9 +5,6 @@
       location = "group:Source/HomepageObjects/HomepageObjects.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Source/ho/ho.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:Source/Homepage/Homepage.xcodeproj">
    </FileRef>
 </Workspace>

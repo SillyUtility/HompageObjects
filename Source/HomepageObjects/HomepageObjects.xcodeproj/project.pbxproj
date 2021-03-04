@@ -22,6 +22,8 @@
 		2C9C257625F0A66C00297CA3 /* NSArray+OldStylePlist.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C9C257425F0A66C00297CA3 /* NSArray+OldStylePlist.m */; };
 		2C9C257925F0A69300297CA3 /* NSDictionary+OldStylePlist.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C9C257725F0A69300297CA3 /* NSDictionary+OldStylePlist.m */; };
 		2C9C257D25F1789500297CA3 /* NSDictionary+OldStylePlist.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C9C257825F0A69300297CA3 /* NSDictionary+OldStylePlist.h */; };
+		2C9C258725F189F000297CA3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C9C258625F189F000297CA3 /* main.m */; };
+		2C9C258B25F18A0100297CA3 /* ho in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2C9C258425F189F000297CA3 /* ho */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		2CAB542025EE7EE30057BD91 /* HomepageObjects.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CAB541625EE7EE30057BD91 /* HomepageObjects.framework */; };
 		2CAB542525EE7EE30057BD91 /* HomepageObjectsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CAB542425EE7EE30057BD91 /* HomepageObjectsTests.m */; };
 		2CAB542725EE7EE30057BD91 /* HomepageObjects.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CAB541925EE7EE30057BD91 /* HomepageObjects.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -39,6 +41,28 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		2C9C257F25F1894000297CA3 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				2C9C258B25F18A0100297CA3 /* ho in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		2C9C258225F189F000297CA3 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		2C5F19E525EE87EE00ADCF0A /* Config.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.plist; };
 		2C5F19E725EEEE9100ADCF0A /* HOPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HOPage.h; sourceTree = "<group>"; };
@@ -55,6 +79,8 @@
 		2C9C257425F0A66C00297CA3 /* NSArray+OldStylePlist.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSArray+OldStylePlist.m"; sourceTree = "<group>"; };
 		2C9C257725F0A69300297CA3 /* NSDictionary+OldStylePlist.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "NSDictionary+OldStylePlist.m"; path = "/Users/eddie/sillyutility/HomepageObjects/Source/HomepageObjects/HomepageObjects/NSDictionary+OldStylePlist.m"; sourceTree = "<absolute>"; };
 		2C9C257825F0A69300297CA3 /* NSDictionary+OldStylePlist.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "NSDictionary+OldStylePlist.h"; path = "/Users/eddie/sillyutility/HomepageObjects/Source/HomepageObjects/HomepageObjects/NSDictionary+OldStylePlist.h"; sourceTree = "<absolute>"; };
+		2C9C258425F189F000297CA3 /* ho */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ho; sourceTree = BUILT_PRODUCTS_DIR; };
+		2C9C258625F189F000297CA3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2CAB541625EE7EE30057BD91 /* HomepageObjects.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HomepageObjects.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CAB541925EE7EE30057BD91 /* HomepageObjects.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomepageObjects.h; sourceTree = "<group>"; };
 		2CAB541A25EE7EE30057BD91 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -66,6 +92,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		2C9C258125F189F000297CA3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2CAB541325EE7EE30057BD91 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -95,11 +128,20 @@
 			name = Additions;
 			sourceTree = "<group>";
 		};
+		2C9C258525F189F000297CA3 /* ho */ = {
+			isa = PBXGroup;
+			children = (
+				2C9C258625F189F000297CA3 /* main.m */,
+			);
+			path = ho;
+			sourceTree = "<group>";
+		};
 		2CAB540C25EE7EE30057BD91 = {
 			isa = PBXGroup;
 			children = (
 				2CAB541825EE7EE30057BD91 /* HomepageObjects */,
 				2CAB542325EE7EE30057BD91 /* HomepageObjectsTests */,
+				2C9C258525F189F000297CA3 /* ho */,
 				2CAB541725EE7EE30057BD91 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -109,6 +151,7 @@
 			children = (
 				2CAB541625EE7EE30057BD91 /* HomepageObjects.framework */,
 				2CAB541F25EE7EE30057BD91 /* HomepageObjectsTests.xctest */,
+				2C9C258425F189F000297CA3 /* ho */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -167,6 +210,23 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		2C9C258325F189F000297CA3 /* ho */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2C9C258825F189F000297CA3 /* Build configuration list for PBXNativeTarget "ho" */;
+			buildPhases = (
+				2C9C258025F189F000297CA3 /* Sources */,
+				2C9C258125F189F000297CA3 /* Frameworks */,
+				2C9C258225F189F000297CA3 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ho;
+			productName = ho;
+			productReference = 2C9C258425F189F000297CA3 /* ho */;
+			productType = "com.apple.product-type.tool";
+		};
 		2CAB541525EE7EE30057BD91 /* HomepageObjects */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2CAB542A25EE7EE30057BD91 /* Build configuration list for PBXNativeTarget "HomepageObjects" */;
@@ -175,6 +235,7 @@
 				2CAB541225EE7EE30057BD91 /* Sources */,
 				2CAB541325EE7EE30057BD91 /* Frameworks */,
 				2CAB541425EE7EE30057BD91 /* Resources */,
+				2C9C257F25F1894000297CA3 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -212,6 +273,9 @@
 				LastUpgradeCheck = 1160;
 				ORGANIZATIONNAME = "Silly Utility LLC";
 				TargetAttributes = {
+					2C9C258325F189F000297CA3 = {
+						CreatedOnToolsVersion = 11.6;
+					};
 					2CAB541525EE7EE30057BD91 = {
 						CreatedOnToolsVersion = 11.6;
 					};
@@ -235,6 +299,7 @@
 			targets = (
 				2CAB541525EE7EE30057BD91 /* HomepageObjects */,
 				2CAB541E25EE7EE30057BD91 /* HomepageObjectsTests */,
+				2C9C258325F189F000297CA3 /* ho */,
 			);
 		};
 /* End PBXProject section */
@@ -258,6 +323,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		2C9C258025F189F000297CA3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2C9C258725F189F000297CA3 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2CAB541225EE7EE30057BD91 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -292,6 +365,26 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		2C9C258925F189F000297CA3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = A7JNPZ3RZ7;
+				ENABLE_HARDENED_RUNTIME = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		2C9C258A25F189F000297CA3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = A7JNPZ3RZ7;
+				ENABLE_HARDENED_RUNTIME = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		2CAB542825EE7EE30057BD91 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -490,6 +583,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		2C9C258825F189F000297CA3 /* Build configuration list for PBXNativeTarget "ho" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2C9C258925F189F000297CA3 /* Debug */,
+				2C9C258A25F189F000297CA3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		2CAB541025EE7EE30057BD91 /* Build configuration list for PBXProject "HomepageObjects" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
