@@ -72,6 +72,9 @@ int command_new(int argc, const char **argv)
 int subcommand_new_site(int argc, const char **argv)
 {
     char *sitename, *sitedir = NULL;
+    NSString *siteName, *siteDir;
+    NSError *err;
+    HOSite *site;
 
     if (argc < 1) {
         fprintf(stderr, "`new site' requires \"site name\"\n");
@@ -89,7 +92,13 @@ int subcommand_new_site(int argc, const char **argv)
 
     fprintf(stderr, "site root is %s\n", sitedir);
 
-    // directory is empty?
+    siteName = @(sitename);
+    siteDir = @(sitedir);
+    site = [HOSite newSiteWithTitle:siteName inDirectory:siteDir error:&err];
+    if (err) {
+        NSLog(@"site err %@", err);
+        return 1;
+    }
 
     return 1;
 }

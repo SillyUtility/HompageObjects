@@ -23,7 +23,10 @@
 		2C9C257925F0A69300297CA3 /* NSDictionary+OldStylePlist.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C9C257725F0A69300297CA3 /* NSDictionary+OldStylePlist.m */; };
 		2C9C257D25F1789500297CA3 /* NSDictionary+OldStylePlist.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C9C257825F0A69300297CA3 /* NSDictionary+OldStylePlist.h */; };
 		2C9C258725F189F000297CA3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C9C258625F189F000297CA3 /* main.m */; };
-		2C9C258B25F18A0100297CA3 /* ho in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2C9C258425F189F000297CA3 /* ho */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		2C9C259425F2A14100297CA3 /* HomepageObjects.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CAB541625EE7EE30057BD91 /* HomepageObjects.framework */; };
+		2C9C259525F2A14100297CA3 /* HomepageObjects.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2CAB541625EE7EE30057BD91 /* HomepageObjects.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		2C9C259B25F2A86E00297CA3 /* NSFileManager+HOAdditons.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C9C259925F2A86E00297CA3 /* NSFileManager+HOAdditons.h */; };
+		2C9C259C25F2A86E00297CA3 /* NSFileManager+HOAdditons.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C9C259A25F2A86E00297CA3 /* NSFileManager+HOAdditons.m */; };
 		2CAB542025EE7EE30057BD91 /* HomepageObjects.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CAB541625EE7EE30057BD91 /* HomepageObjects.framework */; };
 		2CAB542525EE7EE30057BD91 /* HomepageObjectsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CAB542425EE7EE30057BD91 /* HomepageObjectsTests.m */; };
 		2CAB542725EE7EE30057BD91 /* HomepageObjects.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CAB541925EE7EE30057BD91 /* HomepageObjects.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -32,6 +35,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		2C9C259625F2A14100297CA3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2CAB540D25EE7EE30057BD91 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2CAB541525EE7EE30057BD91;
+			remoteInfo = HomepageObjects;
+		};
 		2CAB542125EE7EE30057BD91 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2CAB540D25EE7EE30057BD91 /* Project object */;
@@ -42,16 +52,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		2C9C257F25F1894000297CA3 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 8;
-			dstPath = "";
-			dstSubfolderSpec = 7;
-			files = (
-				2C9C258B25F18A0100297CA3 /* ho in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-		};
 		2C9C258225F189F000297CA3 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -60,6 +60,17 @@
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 1;
+		};
+		2C9C259825F2A14100297CA3 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				2C9C259525F2A14100297CA3 /* HomepageObjects.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -81,6 +92,8 @@
 		2C9C257825F0A69300297CA3 /* NSDictionary+OldStylePlist.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "NSDictionary+OldStylePlist.h"; path = "/Users/eddie/sillyutility/HomepageObjects/Source/HomepageObjects/HomepageObjects/NSDictionary+OldStylePlist.h"; sourceTree = "<absolute>"; };
 		2C9C258425F189F000297CA3 /* ho */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ho; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C9C258625F189F000297CA3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		2C9C259925F2A86E00297CA3 /* NSFileManager+HOAdditons.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+HOAdditons.h"; sourceTree = "<group>"; };
+		2C9C259A25F2A86E00297CA3 /* NSFileManager+HOAdditons.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+HOAdditons.m"; sourceTree = "<group>"; };
 		2CAB541625EE7EE30057BD91 /* HomepageObjects.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HomepageObjects.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CAB541925EE7EE30057BD91 /* HomepageObjects.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomepageObjects.h; sourceTree = "<group>"; };
 		2CAB541A25EE7EE30057BD91 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -96,6 +109,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C9C259425F2A14100297CA3 /* HomepageObjects.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,6 +138,8 @@
 				2C9C257425F0A66C00297CA3 /* NSArray+OldStylePlist.m */,
 				2C9C257825F0A69300297CA3 /* NSDictionary+OldStylePlist.h */,
 				2C9C257725F0A69300297CA3 /* NSDictionary+OldStylePlist.m */,
+				2C9C259925F2A86E00297CA3 /* NSFileManager+HOAdditons.h */,
+				2C9C259A25F2A86E00297CA3 /* NSFileManager+HOAdditons.m */,
 			);
 			name = Additions;
 			sourceTree = "<group>";
@@ -136,6 +152,13 @@
 			path = ho;
 			sourceTree = "<group>";
 		};
+		2C9C258C25F29CE800297CA3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		2CAB540C25EE7EE30057BD91 = {
 			isa = PBXGroup;
 			children = (
@@ -143,6 +166,7 @@
 				2CAB542325EE7EE30057BD91 /* HomepageObjectsTests */,
 				2C9C258525F189F000297CA3 /* ho */,
 				2CAB541725EE7EE30057BD91 /* Products */,
+				2C9C258C25F29CE800297CA3 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -160,10 +184,10 @@
 			isa = PBXGroup;
 			children = (
 				2CAB541925EE7EE30057BD91 /* HomepageObjects.h */,
-				2CAB544925EE7FA80057BD91 /* HOConfig.h */,
-				2CAB544A25EE7FA80057BD91 /* HOConfig.m */,
 				2C5F19EB25EEEE9100ADCF0A /* HOSite.h */,
 				2C5F19ED25EEEE9100ADCF0A /* HOSite.m */,
+				2CAB544925EE7FA80057BD91 /* HOConfig.h */,
+				2CAB544A25EE7FA80057BD91 /* HOConfig.m */,
 				2C5F19EE25EEEE9100ADCF0A /* HOContent.h */,
 				2C5F19F025EEEE9100ADCF0A /* HOContent.m */,
 				2C5F19EC25EEEE9100ADCF0A /* HOSource.h */,
@@ -196,9 +220,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				2CAB542725EE7EE30057BD91 /* HomepageObjects.h in Headers */,
-				2CAB544B25EE7FA80057BD91 /* HOConfig.h in Headers */,
 				2C5F19F525EEEE9100ADCF0A /* HOSite.h in Headers */,
+				2CAB544B25EE7FA80057BD91 /* HOConfig.h in Headers */,
 				2C5F19F825EEEE9100ADCF0A /* HOContent.h in Headers */,
+				2C9C259B25F2A86E00297CA3 /* NSFileManager+HOAdditons.h in Headers */,
 				2C9C257525F0A66C00297CA3 /* NSArray+OldStylePlist.h in Headers */,
 				2C5F19F625EEEE9100ADCF0A /* HOSource.h in Headers */,
 				2C5F19F925EEEE9100ADCF0A /* HOTemplate.h in Headers */,
@@ -217,10 +242,12 @@
 				2C9C258025F189F000297CA3 /* Sources */,
 				2C9C258125F189F000297CA3 /* Frameworks */,
 				2C9C258225F189F000297CA3 /* CopyFiles */,
+				2C9C259825F2A14100297CA3 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				2C9C259725F2A14100297CA3 /* PBXTargetDependency */,
 			);
 			name = ho;
 			productName = ho;
@@ -235,7 +262,6 @@
 				2CAB541225EE7EE30057BD91 /* Sources */,
 				2CAB541325EE7EE30057BD91 /* Frameworks */,
 				2CAB541425EE7EE30057BD91 /* Resources */,
-				2C9C257F25F1894000297CA3 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -342,6 +368,7 @@
 				2CAB544C25EE7FA80057BD91 /* HOConfig.m in Sources */,
 				2C9C257925F0A69300297CA3 /* NSDictionary+OldStylePlist.m in Sources */,
 				2C5F19FA25EEEE9100ADCF0A /* HOContent.m in Sources */,
+				2C9C259C25F2A86E00297CA3 /* NSFileManager+HOAdditons.m in Sources */,
 				2C5F19F225EEEE9100ADCF0A /* HOPage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -357,6 +384,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		2C9C259725F2A14100297CA3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2CAB541525EE7EE30057BD91 /* HomepageObjects */;
+			targetProxy = 2C9C259625F2A14100297CA3 /* PBXContainerItemProxy */;
+		};
 		2CAB542225EE7EE30057BD91 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 2CAB541525EE7EE30057BD91 /* HomepageObjects */;
@@ -371,6 +403,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = A7JNPZ3RZ7;
 				ENABLE_HARDENED_RUNTIME = YES;
+				OTHER_LDFLAGS = "-Wl,-dyld_env,DYLD_FRAMEWORK_PATH=@executable_path/.";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -381,6 +414,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = A7JNPZ3RZ7;
 				ENABLE_HARDENED_RUNTIME = YES;
+				OTHER_LDFLAGS = "-Wl,-dyld_env,DYLD_FRAMEWORK_PATH=@executable_path/.";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

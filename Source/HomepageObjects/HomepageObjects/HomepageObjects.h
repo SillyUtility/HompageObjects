@@ -14,8 +14,8 @@ FOUNDATION_EXPORT double HomepageObjectsVersionNumber;
 //! Project version string for HomepageObjects.
 FOUNDATION_EXPORT const unsigned char HomepageObjectsVersionString[];
 
-#import "HOConfig.h"
 #import "HOSite.h"
+#import "HOConfig.h"
 #import "HOContent.h"
 #import "HOSource.h"
 #import "HOTemplate.h"

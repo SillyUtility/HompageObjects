@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HOSite : NSObject
 
++ newSiteWithTitle:(NSString *)title
+    inDirectory:(NSString *)dir error:(NSError * _Nullable *)error;
+
 @property NSString *title;
 @property NSString *baseURL;
 
