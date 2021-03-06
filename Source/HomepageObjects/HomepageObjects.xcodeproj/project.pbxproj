@@ -27,6 +27,7 @@
 		2C9C259525F2A14100297CA3 /* HomepageObjects.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2CAB541625EE7EE30057BD91 /* HomepageObjects.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2C9C259B25F2A86E00297CA3 /* NSFileManager+HOAdditons.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C9C259925F2A86E00297CA3 /* NSFileManager+HOAdditons.h */; };
 		2C9C259C25F2A86E00297CA3 /* NSFileManager+HOAdditons.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C9C259A25F2A86E00297CA3 /* NSFileManager+HOAdditons.m */; };
+		2C9C259E25F2F24000297CA3 /* Templates in Resources */ = {isa = PBXBuildFile; fileRef = 2C9C259D25F2F24000297CA3 /* Templates */; };
 		2CAB542025EE7EE30057BD91 /* HomepageObjects.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CAB541625EE7EE30057BD91 /* HomepageObjects.framework */; };
 		2CAB542525EE7EE30057BD91 /* HomepageObjectsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CAB542425EE7EE30057BD91 /* HomepageObjectsTests.m */; };
 		2CAB542725EE7EE30057BD91 /* HomepageObjects.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CAB541925EE7EE30057BD91 /* HomepageObjects.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -94,6 +95,7 @@
 		2C9C258625F189F000297CA3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2C9C259925F2A86E00297CA3 /* NSFileManager+HOAdditons.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+HOAdditons.h"; sourceTree = "<group>"; };
 		2C9C259A25F2A86E00297CA3 /* NSFileManager+HOAdditons.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+HOAdditons.m"; sourceTree = "<group>"; };
+		2C9C259D25F2F24000297CA3 /* Templates */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Templates; sourceTree = "<group>"; };
 		2CAB541625EE7EE30057BD91 /* HomepageObjects.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HomepageObjects.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CAB541925EE7EE30057BD91 /* HomepageObjects.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomepageObjects.h; sourceTree = "<group>"; };
 		2CAB541A25EE7EE30057BD91 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -199,6 +201,7 @@
 				2C9C257C25F0A6C900297CA3 /* Additions */,
 				2CAB541A25EE7EE30057BD91 /* Info.plist */,
 				2C5F19E525EE87EE00ADCF0A /* Config.plist */,
+				2C9C259D25F2F24000297CA3 /* Templates */,
 			);
 			path = HomepageObjects;
 			sourceTree = "<group>";
@@ -335,6 +338,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C9C259E25F2F24000297CA3 /* Templates in Resources */,
 				2C5F19E625EE87EE00ADCF0A /* Config.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

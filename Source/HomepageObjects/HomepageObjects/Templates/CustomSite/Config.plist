@@ -1,0 +1,13 @@
+/* $$SITE_TILE$$ Config.plist */
+{
+    // basic site variables
+    title = "$$SITE_TITLE$$";
+    baseURL = "$$BASE_URL$$";
+
+    // directories
+    siteDirectory = "$$SITE_ROOT$$";
+    contentDirectory = $$CONTENT_DIRECTORY$$;
+    layoutDirectory = $$LAYOUTS_DIRECTORY$$;
+    templateDirectory = $$TEMPLATES_DIRECTORY$$;
+    buildDirectory = $$BUILD_DIRECTORY$$;
+}

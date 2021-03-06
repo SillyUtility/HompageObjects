@@ -1,0 +1,13 @@
+#+TITLE: Home
+#+DATE: 2021-03-05
+#+STARTUP: showall
+#+HO_PAGE_CSS:
+#+HO_PAGE_JS:
+#+HO_CATEGORY:
+#+HO_SOCIAL:
+#+HO_LAYOUT: default
+
+* Welcome
+
+This is the boring default content. Edit =content/index.org= to change
+this content.

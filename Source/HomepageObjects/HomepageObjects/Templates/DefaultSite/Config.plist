@@ -6,7 +6,7 @@
 
     // directories
     siteDirectory = ".";
-    assetDirectory = assets;
+    assetDirectory = assets
     contentDirectory = content;
     layoutDirectory = layouts;
     templateDirectory = templates;
