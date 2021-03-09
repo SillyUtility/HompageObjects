@@ -8,3 +8,7 @@ This was just a fleeting idea that will proably go nowhere. If I were
 to work on this it would become a framework for building homepages and
 blogs. Decided to push it to GitHub in the open, because I've been
 working on too many things in private repos.
+
+** Export Org to JSON
+
+=emacs $ORG_FILE --batch -l $INIT_EL -f ox-json-export-to-file=

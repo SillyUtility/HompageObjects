@@ -8,7 +8,38 @@
 
 #import "HOConfig.h"
 
-@implementation HOConfig
+@implementation HOConfig {
+    NSMutableDictionary *_config;
+}
+
+- initWithPath:(NSString *)path
+{
+    NSFileManager *fm;
+    NSString *siteRoot;
+
+    if (!(self = [super init]))
+        return self;
+
+    fm = NSFileManager.defaultManager;
+    if (![fm fileExistsAtPath:path]) {
+        fprintf(stderr, "Config.plist not found at %s", path.UTF8String);
+        return nil;
+    }
+
+    _config = [NSMutableDictionary dictionaryWithContentsOfFile:path];
+
+    siteRoot = [path stringByDeletingLastPathComponent];
+    siteRoot = [siteRoot stringByAppendingPathComponent:_config[@"siteDirectory"]];
+    siteRoot = [siteRoot stringByStandardizingPath];
+    _config[@"siteRoot"] = siteRoot;
+
+    return self;
+}
+
++ (instancetype)configAtPath:(NSString *)path
+{
+    return [[HOConfig alloc] initWithPath:path];
+}
 
 + (NSURL *)URLForDefaultConfigTemplate
 {
@@ -42,4 +73,30 @@
 
     return self;
 }
+
+- (id)objectForKeyedSubscript:(id<NSCopying>)key
+{
+    return _config[key];
+}
+
+- (void)setObject:(id)obj forKeyedSubscript:(id<NSCopying>)key
+{
+    _config[key] = obj;
+}
+
+- (NSString *)contentRoot
+{
+    return [self[@"siteRoot"] stringByAppendingPathComponent:self[@"contentDirectory"]];
+}
+
+- (NSString *)buildRoot
+{
+    return [self[@"siteRoot"] stringByAppendingPathComponent:self[@"buildDirectory"]];
+}
+
+- (NSDictionary *)dictionary
+{
+    return _config.copy;
+}
+
 @end

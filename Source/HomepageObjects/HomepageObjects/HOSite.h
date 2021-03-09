@@ -10,13 +10,22 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class HOConfig;
+
 @interface HOSite : NSObject
 
-+ newSiteWithTitle:(NSString *)title
+- initWithConfig:(HOConfig *)config;
+
++ (instancetype)newSiteWithTitle:(NSString *)title
     inDirectory:(NSString *)dir error:(NSError * _Nullable *)error;
 
 @property NSString *title;
 @property NSString *baseURL;
+@property HOConfig *config;
+
++ (instancetype)siteAtPath:(NSString *)path error:(NSError * _Nullable *)error;
+
+- (void)buildAndReturnError:(NSError * _Nullable *)error;
 
 @end
 

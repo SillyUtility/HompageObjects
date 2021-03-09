@@ -18,7 +18,7 @@ void subcommand_new_page(const char **argv);
 void subcommand_new_post(const char **argv);
 
 void command_serve(const char **argv);
-void command_build(const char **argv);
+int command_build(int argc, const char **argv);
 void command_publish(const char **argv);
 
 void usage()
@@ -47,10 +47,15 @@ int main(int argc, const char **argv)
     if (strcmp(command, "new") == 0)
         return command_new(argc - 2, argv + 2);
 
+    if (strcmp(command, "build") == 0)
+        return command_build(argc -2, argv + 2);
+
     HO_END_AUTORELEASEPOOL
 
     return 0;
 }
+
+#pragma mark - new command
 
 int command_new(int argc, const char **argv)
 {
@@ -96,9 +101,37 @@ int subcommand_new_site(int argc, const char **argv)
     siteDir = @(sitedir);
     site = [HOSite newSiteWithTitle:siteName inDirectory:siteDir error:&err];
     if (err) {
-        NSLog(@"site err %@", err);
+        fprintf(stderr, "site err %s", err.description.UTF8String);
         return 1;
     }
 
     return 1;
+}
+
+#pragma mark - serve command
+
+#pragma mark - build command
+
+int command_build(int argc, const char **argv)
+{
+    char *sitedir = NULL;
+    NSError *err;
+    HOSite *site;
+
+    if (argc < 1) {
+        fprintf(stderr, "using current directory as site root\n");
+        sitedir = getcwd(sitedir, MAXPATHLEN);
+    } else {
+        sitedir = strdup(argv[0]);
+    }
+
+    site = [HOSite siteAtPath:@(sitedir) error:&err];
+    if (err) {
+        fprintf(stderr, "site err %s", err.description.UTF8String);
+        return 1;
+    }
+
+    [site buildAndReturnError:&err];;
+
+    return 0;
 }

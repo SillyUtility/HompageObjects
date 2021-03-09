@@ -10,7 +10,43 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class HOSite;
+
 @interface HOContent : NSObject
+
+- initWithSite:(HOSite *)site
+    path:(NSString *)path
+    subdirectory:(NSString *)subdir
+    fileAttributes:(NSDictionary *)fileAttrs;
+
+@property (readonly, weak) HOSite *site;
+
+@property (readonly) NSString *path;
+@property (readonly) NSString *subdirectory;
+@property (readonly) NSString *name;
+@property (readonly) NSString *title;
+
+@property (readonly) NSDate *creationDate;
+@property (readonly) NSDate *modificationDate;
+
+@property (readonly) NSString *layout;
+
+@property (readonly) NSString *destPath;
+
+@property (readonly) BOOL isItem;
+@property (readonly) BOOL isCollection;
+
+@end
+
+@interface HOContentItem : HOContent
+
+@property (readonly) NSString *content;
+
+@end
+
+@interface HOContentCollection : HOContent
+
+@property (readonly) NSArray *items;
 
 @end
 

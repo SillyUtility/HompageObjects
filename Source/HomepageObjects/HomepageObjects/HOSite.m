@@ -7,11 +7,23 @@
 //
 
 #import "HOSite.h"
+#import "HOConfig.h"
+#import "HOContent.h"
 #import "NSFileManager+HOAdditons.h"
 
 @implementation HOSite
 
-+ newSiteWithTitle:(NSString *)title
+- initWithConfig:(HOConfig *)config
+{
+    if (!(self = [super init]))
+        return self;
+
+    _config = config;
+
+    return self;
+}
+
++ (instancetype)newSiteWithTitle:(NSString *)title
     inDirectory:(NSString *)dir error:(NSError * _Nullable *)error
 {
     NSFileManager *fm;
@@ -118,5 +130,90 @@ static void log_indent(NSUInteger level, const char *fmt, const char *arg) {
         }
     }
 }
+
++ (instancetype)siteAtPath:(NSString *)path error:(NSError * _Nullable *)error
+{
+    NSFileManager *fm;
+    BOOL isDir;
+    NSString *configPath;
+    HOConfig *config;
+
+    fprintf(stderr, "siteRoot is %s\n", path.UTF8String);
+
+    fm = NSFileManager.defaultManager;
+
+    if ([fm fileExistsAtPath:path isDirectory:&isDir]) {
+        if (!isDir) {
+            fprintf(stderr, "%s is a file\n", path.UTF8String);
+            return nil;
+        }
+    } else {
+        fprintf(stderr, "%s does not exist\n", path.UTF8String);
+        return nil;
+    }
+
+    configPath = [path stringByAppendingPathComponent:@"Config.plist"];
+    config = [HOConfig configAtPath:configPath];
+
+    return [[HOSite alloc] initWithConfig:config];
+}
+
+- (void)buildAndReturnError:(NSError * _Nullable *)error
+{
+    NSString *contentRoot;
+
+    contentRoot = self.config.contentRoot;
+
+    fprintf(stderr, "Build with config %s\n",
+        self.config.dictionary.description.UTF8String);
+    fprintf(stderr, "Processing content in %s\n", contentRoot.UTF8String);
+
+    [self buildContentDirectory:contentRoot];
+}
+
+- (void)buildContentDirectory:(NSString *)contentDir
+{
+    NSFileManager *fm;
+    NSDirectoryEnumerator *enumerator;
+    NSString *path;
+    NSString *subdir;
+    NSString *fullSrcPath;
+    HOContentItem *item;
+    HOContentCollection *collection;
+    BOOL isDir;
+
+    fm = NSFileManager.defaultManager;
+    enumerator = [fm enumeratorAtPath:contentDir];
+
+    while ((path = enumerator.nextObject)) {
+        subdir = [path stringByDeletingLastPathComponent];
+        fullSrcPath = [contentDir stringByAppendingPathComponent:path];
+
+        if (![fm fileExistsAtPath:fullSrcPath isDirectory:&isDir])
+            continue;
+
+        if (isDir) {
+            log_indent(enumerator.level, "collection %s ‣ ", path.UTF8String);
+            collection = [[HOContentCollection alloc]
+                initWithSite:self
+                path:fullSrcPath
+                subdirectory:subdir
+                fileAttributes:enumerator.fileAttributes
+            ];
+            fprintf(stderr, "%s\n", collection.destPath.UTF8String);
+            continue;
+        }
+
+        log_indent(enumerator.level, "item %s ‣ ", path.UTF8String);
+        item = [[HOContentItem alloc]
+            initWithSite:self
+            path:fullSrcPath
+            subdirectory:subdir
+            fileAttributes:enumerator.fileAttributes
+        ];
+        fprintf(stderr, "%s\n", item.destPath.UTF8String);
+    }
+}
+
 
 @end
