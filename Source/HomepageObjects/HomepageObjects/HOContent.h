@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <JavaScriptCore/JavaScriptCore.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -38,15 +39,31 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface HOContentItem : HOContent
+@protocol HOContentItemExports <JSExport>
+@property (readonly) NSString *source;
+@property (readonly) NSArray<NSString *> *layouts;
+@property (readonly) NSDictionary *args;
+@property NSString *rendered;
+@end
+
+@interface HOContentItem : HOContent <HOContentItemExports>
 
 @property (readonly) NSString *content;
+
+@property (readonly) NSString *source;
+@property (readonly) NSArray<NSString *> *layouts;
+@property (readonly) NSDictionary *args;
+@property NSString *rendered;
+
+- (void)writeToDestination;
 
 @end
 
 @interface HOContentCollection : HOContent
 
 @property (readonly) NSArray *items;
+
+- (void)createDirectoryIfNeeded;
 
 @end
 

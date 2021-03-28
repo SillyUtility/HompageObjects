@@ -21,6 +21,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (readonly) NSString *contentRoot;
 @property (readonly) NSString *buildRoot;
+@property (readonly) NSString *layoutRoot;
+
+@property (readonly) BOOL hasCustomScript;
 
 @property (readonly) NSDictionary *dictionary;
 

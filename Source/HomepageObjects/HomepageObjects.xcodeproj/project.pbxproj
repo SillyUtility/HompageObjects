@@ -28,6 +28,8 @@
 		2C9C259B25F2A86E00297CA3 /* NSFileManager+HOAdditons.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C9C259925F2A86E00297CA3 /* NSFileManager+HOAdditons.h */; };
 		2C9C259C25F2A86E00297CA3 /* NSFileManager+HOAdditons.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C9C259A25F2A86E00297CA3 /* NSFileManager+HOAdditons.m */; };
 		2C9C259E25F2F24000297CA3 /* Templates in Resources */ = {isa = PBXBuildFile; fileRef = 2C9C259D25F2F24000297CA3 /* Templates */; };
+		2CA84B93260D52200020940F /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CA84B92260D52200020940F /* JavaScriptCore.framework */; };
+		2CA84B9B260E563D0020940F /* Scripts in Resources */ = {isa = PBXBuildFile; fileRef = 2CA84B9A260E54CD0020940F /* Scripts */; };
 		2CAB542025EE7EE30057BD91 /* HomepageObjects.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CAB541625EE7EE30057BD91 /* HomepageObjects.framework */; };
 		2CAB542525EE7EE30057BD91 /* HomepageObjectsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CAB542425EE7EE30057BD91 /* HomepageObjectsTests.m */; };
 		2CAB542725EE7EE30057BD91 /* HomepageObjects.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CAB541925EE7EE30057BD91 /* HomepageObjects.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -89,13 +91,15 @@
 		2C5F19F025EEEE9100ADCF0A /* HOContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HOContent.m; sourceTree = "<group>"; };
 		2C9C257325F0A66C00297CA3 /* NSArray+OldStylePlist.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSArray+OldStylePlist.h"; sourceTree = "<group>"; };
 		2C9C257425F0A66C00297CA3 /* NSArray+OldStylePlist.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSArray+OldStylePlist.m"; sourceTree = "<group>"; };
-		2C9C257725F0A69300297CA3 /* NSDictionary+OldStylePlist.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "NSDictionary+OldStylePlist.m"; path = "/Users/eddie/sillyutility/HomepageObjects/Source/HomepageObjects/HomepageObjects/NSDictionary+OldStylePlist.m"; sourceTree = "<absolute>"; };
-		2C9C257825F0A69300297CA3 /* NSDictionary+OldStylePlist.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "NSDictionary+OldStylePlist.h"; path = "/Users/eddie/sillyutility/HomepageObjects/Source/HomepageObjects/HomepageObjects/NSDictionary+OldStylePlist.h"; sourceTree = "<absolute>"; };
+		2C9C257725F0A69300297CA3 /* NSDictionary+OldStylePlist.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+OldStylePlist.m"; sourceTree = "<group>"; };
+		2C9C257825F0A69300297CA3 /* NSDictionary+OldStylePlist.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+OldStylePlist.h"; sourceTree = "<group>"; };
 		2C9C258425F189F000297CA3 /* ho */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ho; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C9C258625F189F000297CA3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2C9C259925F2A86E00297CA3 /* NSFileManager+HOAdditons.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+HOAdditons.h"; sourceTree = "<group>"; };
 		2C9C259A25F2A86E00297CA3 /* NSFileManager+HOAdditons.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+HOAdditons.m"; sourceTree = "<group>"; };
 		2C9C259D25F2F24000297CA3 /* Templates */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Templates; sourceTree = "<group>"; };
+		2CA84B92260D52200020940F /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		2CA84B9A260E54CD0020940F /* Scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Scripts; sourceTree = "<group>"; };
 		2CAB541625EE7EE30057BD91 /* HomepageObjects.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HomepageObjects.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CAB541925EE7EE30057BD91 /* HomepageObjects.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomepageObjects.h; sourceTree = "<group>"; };
 		2CAB541A25EE7EE30057BD91 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -119,6 +123,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CA84B93260D52200020940F /* JavaScriptCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,6 +162,7 @@
 		2C9C258C25F29CE800297CA3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2CA84B92260D52200020940F /* JavaScriptCore.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -201,6 +207,7 @@
 				2C9C257C25F0A6C900297CA3 /* Additions */,
 				2CAB541A25EE7EE30057BD91 /* Info.plist */,
 				2C5F19E525EE87EE00ADCF0A /* Config.plist */,
+				2CA84B9A260E54CD0020940F /* Scripts */,
 				2C9C259D25F2F24000297CA3 /* Templates */,
 			);
 			path = HomepageObjects;
@@ -338,6 +345,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CA84B9B260E563D0020940F /* Scripts in Resources */,
 				2C9C259E25F2F24000297CA3 /* Templates in Resources */,
 				2C5F19E625EE87EE00ADCF0A /* Config.plist in Resources */,
 			);

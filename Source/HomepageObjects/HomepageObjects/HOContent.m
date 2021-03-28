@@ -10,6 +10,10 @@
 #import "HOSite.h"
 #import "HOConfig.h"
 
+@interface HOContent ()
+@property NSArray<NSString *> *layoutOrder;
+@end
+
 @implementation HOContent {
     NSMutableArray *_layoutOrder;
     NSDictionary<NSFileAttributeKey, id> *_fileAttributes;
@@ -77,6 +81,99 @@
         return [super.destPath stringByAppendingPathComponent:@"index.html"];
 }
 
+/* JSExport */
+- (NSString *)source
+{
+    NSString *src;
+    NSError *err;
+
+    src = [NSString stringWithContentsOfFile:self.path
+        encoding:NSUTF8StringEncoding
+        error:&err
+    ];
+    if (err)
+        fprintf(stderr, "source err %s %s\n",
+            self.path.UTF8String,
+            err.localizedDescription.UTF8String);
+
+    return src;
+}
+
+- (NSArray<NSString *> *)layouts
+{
+    NSMutableArray *layoutSources;
+    NSFileManager *fm;
+    NSString *layoutPath;
+    NSString *src;
+    NSError *err;
+
+    layoutSources = NSMutableArray.array;
+    fm = NSFileManager.defaultManager;
+
+    for (NSString *layout in self.layoutOrder) {
+        layoutPath = self.site.config.layoutRoot;
+        layoutPath = [layoutPath stringByAppendingPathComponent:
+            [layout stringByAppendingPathExtension:@"html"]];
+        if (![fm fileExistsAtPath:layoutPath])
+            continue;
+        src = [NSString stringWithContentsOfFile:layoutPath
+            encoding:NSUTF8StringEncoding
+            error:&err
+        ];
+        if (err)
+            fprintf(stderr, "layout err %s %s\n",
+                layoutPath.UTF8String,
+                err.localizedDescription.UTF8String);
+        [layoutSources addObject:src];
+    }
+
+    return layoutSources;
+}
+
+- (NSDictionary *)args
+{
+    return @{
+        //@"Config": self.site.config.dictionary,
+        @"Site": @{
+            @"title": self.site.config[@"title"],
+        },
+        @"Page": @{
+            @"path": self.path,
+            @"name": self.name,
+            @"title": self.title,
+        }
+    };
+}
+
+- (void)writeToDestination
+{
+    NSError *err;
+    NSFileManager *fm;
+    NSString *dir;
+
+    fm = NSFileManager.defaultManager;
+    dir = self.destPath.stringByDeletingLastPathComponent;
+    [fm createDirectoryAtPath:dir
+        withIntermediateDirectories:YES
+        attributes:nil
+        error:&err
+    ];
+    if (err)
+        fprintf(stderr, "dest dir error %s %s\n",
+            dir.UTF8String,
+            err.localizedDescription.UTF8String);
+
+    [self.rendered writeToFile:self.destPath
+        atomically:YES
+        encoding:NSUTF8StringEncoding
+        error:&err
+    ];
+    if (err)
+        fprintf(stderr, "write err %s %s\n",
+            self.destPath.UTF8String,
+            err.localizedDescription.UTF8String);
+}
+
 @end
 
 @implementation HOContentCollection
@@ -84,6 +181,22 @@
 - (BOOL)isCollection
 {
     return YES;
+}
+
+- (void)createDirectoryIfNeeded
+{
+    NSFileManager *fm;
+    NSError *err;
+    fm = NSFileManager.defaultManager;
+    [fm createDirectoryAtPath:self.destPath
+        withIntermediateDirectories:YES
+        attributes:nil
+        error:&err
+    ];
+    if (err)
+        fprintf(stderr, "dir error %s %s\n",
+            self.destPath.UTF8String,
+            err.localizedDescription.UTF8String);
 }
 
 @end

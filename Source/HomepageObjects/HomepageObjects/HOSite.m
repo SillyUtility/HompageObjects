@@ -6,12 +6,16 @@
 //  Copyright © 2021 Silly Utility LLC. All rights reserved.
 //
 
+#import <JavaScriptCore/JavaScriptCore.h>
+
 #import "HOSite.h"
 #import "HOConfig.h"
 #import "HOContent.h"
 #import "NSFileManager+HOAdditons.h"
 
-@implementation HOSite
+@implementation HOSite {
+    JSContext *_ctx;
+}
 
 - initWithConfig:(HOConfig *)config
 {
@@ -60,23 +64,37 @@
     return nil;
 }
 
++ (NSString *)siteTemplatePathForTemplateName:(NSString *)templateName
+{
+    NSString *realativeResourcePath;
+    NSBundle *bundle;
+
+    realativeResourcePath = [NSString stringWithFormat:@"Templates/%@",
+        templateName];
+    bundle = [NSBundle bundleForClass:self];
+
+    return [bundle pathForResource:realativeResourcePath ofType:@""];
+}
+
++ (NSString *)scriptPathForScriptName:(NSString *)scriptName
+{
+    NSString *realativeResourcePath;
+    NSBundle *bundle;
+
+    realativeResourcePath = [NSString stringWithFormat:@"Scripts/%@",
+        scriptName];
+    bundle = [NSBundle bundleForClass:self];
+
+    return [bundle pathForResource:realativeResourcePath ofType:@"js"];
+}
+
 + (void)initializeSiteDirectory:(NSString *)siteDirectory
     withTemplate:(NSString *)template
 {
-    NSFileManager *fm;
-    NSBundle *bundle;
     NSString *templatePath;
 
     fprintf(stderr, "Initializing %s\n", siteDirectory.UTF8String);
-
-    fm = NSFileManager.defaultManager;
-    bundle = [NSBundle bundleForClass:self];
-
-    templatePath = [bundle
-        pathForResource:[NSString stringWithFormat:@"Templates/%@", template]
-        ofType:@""
-    ];
-
+    templatePath = [self siteTemplatePathForTemplateName:template];
     [self copyConentsAtPath:templatePath toPath:siteDirectory];
 }
 
@@ -168,7 +186,50 @@ static void log_indent(NSUInteger level, const char *fmt, const char *arg) {
         self.config.dictionary.description.UTF8String);
     fprintf(stderr, "Processing content in %s\n", contentRoot.UTF8String);
 
+    // create JSContext
+    if (!_ctx)
+        _ctx = JSContext.new;
+
+    // load default scripts
+    NSString *scriptPath;
+    NSString *scriptSrc;
+    scriptPath = [self.class scriptPathForScriptName:@"Template"];
+    scriptSrc = [NSString stringWithContentsOfFile:scriptPath
+        encoding:NSUTF8StringEncoding
+        error:NULL
+    ];
+    [self loadScript:scriptSrc withName:@"Template"];
+
+    scriptPath = [self.class scriptPathForScriptName:@"Build"];
+    scriptSrc = [NSString stringWithContentsOfFile:scriptPath
+        encoding:NSUTF8StringEncoding
+        error:NULL
+    ];
+    [self loadScript:scriptSrc withName:@"Build"];
+
+    // load layouts, templates, partials and so on
+
+    // load custom scripts
+#if 0
+    if (self.config.hasCustomScript) {
+        NSString *customScriptPath;
+        NSString *customScriptSrc;
+        NSURL *customScriptURL;
+        [_ctx evaluateScript:customScriptSrc withSourceURL:customScriptURL];
+    }
+#endif
+
     [self buildContentDirectory:contentRoot];
+}
+
+- (void)loadScript:(NSString *)script withName:(NSString *)name
+{
+    NSString *urlStr;
+    NSURL *scriptURL;
+
+    urlStr = [NSString stringWithFormat:@"ho-builtin://%@.js", name];
+    scriptURL = [NSURL URLWithString:urlStr];
+    [_ctx evaluateScript:script withSourceURL:scriptURL];
 }
 
 - (void)buildContentDirectory:(NSString *)contentDir
@@ -201,6 +262,12 @@ static void log_indent(NSUInteger level, const char *fmt, const char *arg) {
                 fileAttributes:enumerator.fileAttributes
             ];
             fprintf(stderr, "%s\n", collection.destPath.UTF8String);
+            [collection createDirectoryIfNeeded];
+            continue;
+        }
+
+        if (![path.pathExtension isEqualToString:@"org"]) {
+            log_indent(enumerator.level, "skip %s\n", path.UTF8String);
             continue;
         }
 
@@ -212,8 +279,16 @@ static void log_indent(NSUInteger level, const char *fmt, const char *arg) {
             fileAttributes:enumerator.fileAttributes
         ];
         fprintf(stderr, "%s\n", item.destPath.UTF8String);
+
+        [self buildItem:item withContext:_ctx];
+        [item writeToDestination];
     }
 }
 
+- (void)buildItem:(HOContentItem *)item withContext:(JSContext *)ctx
+{
+    JSValue *buildItemFn = ctx[@"buildItem"];
+    [buildItemFn callWithArguments:@[item]];
+}
 
 @end

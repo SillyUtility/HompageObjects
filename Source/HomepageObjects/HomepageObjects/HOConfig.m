@@ -94,6 +94,11 @@
     return [self[@"siteRoot"] stringByAppendingPathComponent:self[@"buildDirectory"]];
 }
 
+- (NSString *)layoutRoot
+{
+    return [self[@"siteRoot"] stringByAppendingPathComponent:self[@"layoutDirectory"]];
+}
+
 - (NSDictionary *)dictionary
 {
     return _config.copy;
