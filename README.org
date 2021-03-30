@@ -11,7 +11,7 @@ working on too many things in private repos.
 
 ** Export Org to JSON
 
-=emacs $ORG_FILE --batch -l $INIT_EL -f ox-json-export-to-file=
+=emacs $ORG_FILE --batch -l $INIT_EL --eval "(org-export-to-file 'json \"$CACHE_FILE\")"=
 
 ** Acknowledgments
 

@@ -99,6 +99,11 @@
     return [self[@"siteRoot"] stringByAppendingPathComponent:self[@"layoutDirectory"]];
 }
 
+- (NSString *)cacheRoot
+{
+    return [self[@"siteRoot"] stringByAppendingPathComponent:self[@"cacheDirectory"]];
+}
+
 - (NSDictionary *)dictionary
 {
     return _config.copy;

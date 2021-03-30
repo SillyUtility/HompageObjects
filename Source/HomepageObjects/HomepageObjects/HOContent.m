@@ -96,6 +96,9 @@
             self.path.UTF8String,
             err.localizedDescription.UTF8String);
 
+    // TODO: convert .org to HTML
+    // TODO: convert .md to HTML
+
     return src;
 }
 
