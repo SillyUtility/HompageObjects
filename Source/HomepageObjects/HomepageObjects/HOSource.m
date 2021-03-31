@@ -91,7 +91,6 @@
     pipeErr = NSPipe.pipe;
 
     task = NSTask.new;
-    task.executableURL = [NSURL fileURLWithPath:emacsPath];
     task.arguments = @[
         orgPath,
         @"--batch",
@@ -115,8 +114,10 @@
     //    task.arguments.description.UTF8String);
 
     if (@available(macOS 10.13, *)) {
+        task.executableURL = [NSURL fileURLWithPath:emacsPath];
         [task launchAndReturnError:&err];
     } else {
+        task.launchPath = emacsPath;
         [task launch];
     }
     [task waitUntilExit];
