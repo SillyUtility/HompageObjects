@@ -9,6 +9,7 @@
 #import "HOContent.h"
 #import "HOSite.h"
 #import "HOConfig.h"
+#import "HOSource.h"
 
 @interface HOContent ()
 @property NSArray<NSString *> *layoutOrder;
@@ -98,6 +99,12 @@
 
     // TODO: convert .org to HTML
     // TODO: convert .md to HTML
+
+    HOOrgSource *sourceFile = [[HOOrgSource alloc]
+        initWithPath:self.path
+        config:self.site.config
+    ];
+    [sourceFile convert];
 
     return src;
 }

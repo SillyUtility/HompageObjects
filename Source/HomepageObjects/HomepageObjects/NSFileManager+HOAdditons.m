@@ -10,6 +10,17 @@
 
 @implementation NSFileManager (HOAdditons)
 
++ (NSError *)makeDirectoryAtPath:(NSString *)dir
+{
+    NSError *err = NULL;
+    [self.defaultManager createDirectoryAtPath:dir
+        withIntermediateDirectories:YES
+        attributes:nil
+        error:&err
+    ];
+    return err;
+}
+
 - (BOOL)isEmptyDirectoryAtPath:(NSString *)dir
 {
     while ([self enumeratorAtPath:dir].nextObject)

@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NSFileManager (HOAdditons)
 
++ (NSError *)makeDirectoryAtPath:(NSString *)dir;
+
 - (BOOL)isEmptyDirectoryAtPath:(NSString *)dir;
 
 @end
