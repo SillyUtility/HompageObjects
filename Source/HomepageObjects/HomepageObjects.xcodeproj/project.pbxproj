@@ -13,7 +13,7 @@
 		2C5F19F325EEEE9100ADCF0A /* HOTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C5F19E925EEEE9100ADCF0A /* HOTemplate.m */; };
 		2C5F19F425EEEE9100ADCF0A /* HOSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C5F19EA25EEEE9100ADCF0A /* HOSource.m */; };
 		2C5F19F525EEEE9100ADCF0A /* HOSite.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C5F19EB25EEEE9100ADCF0A /* HOSite.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		2C5F19F625EEEE9100ADCF0A /* HOSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C5F19EC25EEEE9100ADCF0A /* HOSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2C5F19F625EEEE9100ADCF0A /* HOSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C5F19EC25EEEE9100ADCF0A /* HOSource.h */; };
 		2C5F19F725EEEE9100ADCF0A /* HOSite.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C5F19ED25EEEE9100ADCF0A /* HOSite.m */; };
 		2C5F19F825EEEE9100ADCF0A /* HOContent.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C5F19EE25EEEE9100ADCF0A /* HOContent.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2C5F19F925EEEE9100ADCF0A /* HOTemplate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C5F19EF25EEEE9100ADCF0A /* HOTemplate.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -32,6 +32,8 @@
 		2CA84B9B260E563D0020940F /* Scripts in Resources */ = {isa = PBXBuildFile; fileRef = 2CA84B9A260E54CD0020940F /* Scripts */; };
 		2CA84B9E261530730020940F /* HOOrgParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CA84B9C261530730020940F /* HOOrgParser.h */; };
 		2CA84B9F261530730020940F /* HOOrgParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA84B9D261530730020940F /* HOOrgParser.m */; };
+		2CA84BA32616555B0020940F /* HOUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CA84BA12616555B0020940F /* HOUtils.h */; };
+		2CA84BA42616555B0020940F /* HOUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA84BA22616555B0020940F /* HOUtils.m */; };
 		2CAB542025EE7EE30057BD91 /* HomepageObjects.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CAB541625EE7EE30057BD91 /* HomepageObjects.framework */; };
 		2CAB542525EE7EE30057BD91 /* HomepageObjectsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CAB542425EE7EE30057BD91 /* HomepageObjectsTests.m */; };
 		2CAB542725EE7EE30057BD91 /* HomepageObjects.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CAB541925EE7EE30057BD91 /* HomepageObjects.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -104,6 +106,8 @@
 		2CA84B9A260E54CD0020940F /* Scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Scripts; sourceTree = "<group>"; };
 		2CA84B9C261530730020940F /* HOOrgParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HOOrgParser.h; sourceTree = "<group>"; };
 		2CA84B9D261530730020940F /* HOOrgParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HOOrgParser.m; sourceTree = "<group>"; };
+		2CA84BA12616555B0020940F /* HOUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HOUtils.h; sourceTree = "<group>"; };
+		2CA84BA22616555B0020940F /* HOUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HOUtils.m; sourceTree = "<group>"; };
 		2CAB541625EE7EE30057BD91 /* HomepageObjects.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HomepageObjects.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CAB541925EE7EE30057BD91 /* HomepageObjects.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomepageObjects.h; sourceTree = "<group>"; };
 		2CAB541A25EE7EE30057BD91 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -171,6 +175,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		2CA84BA0261655280020940F /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				2CA84BA12616555B0020940F /* HOUtils.h */,
+				2CA84BA22616555B0020940F /* HOUtils.m */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
 		2CAB540C25EE7EE30057BD91 = {
 			isa = PBXGroup;
 			children = (
@@ -210,6 +223,7 @@
 				2C5F19E825EEEE9100ADCF0A /* HOPage.m */,
 				2CA84B9C261530730020940F /* HOOrgParser.h */,
 				2CA84B9D261530730020940F /* HOOrgParser.m */,
+				2CA84BA0261655280020940F /* Utils */,
 				2C9C257C25F0A6C900297CA3 /* Additions */,
 				2CAB541A25EE7EE30057BD91 /* Info.plist */,
 				2C5F19E525EE87EE00ADCF0A /* Config.plist */,
@@ -238,11 +252,12 @@
 				2CAB542725EE7EE30057BD91 /* HomepageObjects.h in Headers */,
 				2C5F19F525EEEE9100ADCF0A /* HOSite.h in Headers */,
 				2CAB544B25EE7FA80057BD91 /* HOConfig.h in Headers */,
+				2CA84BA32616555B0020940F /* HOUtils.h in Headers */,
 				2C5F19F825EEEE9100ADCF0A /* HOContent.h in Headers */,
 				2C9C259B25F2A86E00297CA3 /* NSFileManager+HOAdditons.h in Headers */,
 				2C9C257525F0A66C00297CA3 /* NSArray+OldStylePlist.h in Headers */,
-				2CA84B9E261530730020940F /* HOOrgParser.h in Headers */,
 				2C5F19F625EEEE9100ADCF0A /* HOSource.h in Headers */,
+				2CA84B9E261530730020940F /* HOOrgParser.h in Headers */,
 				2C5F19F925EEEE9100ADCF0A /* HOTemplate.h in Headers */,
 				2C5F19F125EEEE9100ADCF0A /* HOPage.h in Headers */,
 				2C9C257D25F1789500297CA3 /* NSDictionary+OldStylePlist.h in Headers */,
@@ -384,6 +399,7 @@
 				2C5F19F325EEEE9100ADCF0A /* HOTemplate.m in Sources */,
 				2C5F19F425EEEE9100ADCF0A /* HOSource.m in Sources */,
 				2C9C257625F0A66C00297CA3 /* NSArray+OldStylePlist.m in Sources */,
+				2CA84BA42616555B0020940F /* HOUtils.m in Sources */,
 				2CA84B9F261530730020940F /* HOOrgParser.m in Sources */,
 				2CAB544C25EE7FA80057BD91 /* HOConfig.m in Sources */,
 				2C9C257925F0A69300297CA3 /* NSDictionary+OldStylePlist.m in Sources */,

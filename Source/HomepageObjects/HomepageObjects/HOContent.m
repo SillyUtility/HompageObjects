@@ -105,6 +105,7 @@
         config:self.site.config
     ];
     [sourceFile convert];
+    [sourceFile parse];
 
     return src;
 }

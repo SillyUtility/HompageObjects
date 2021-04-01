@@ -8,6 +8,8 @@
 
 #import "HOSource.h"
 #import "HOConfig.h"
+#import "HOOrgParser.h"
+#import "HOUtils.h"
 
 #import "NSFileManager+HOAdditons.h"
 
@@ -25,12 +27,15 @@
 }
 
 - (void)convert {}
+- (void)parse {}
 
 @end
 
 
 @implementation HOOrgSource {
     NSString *_jsonPath;
+    HOOrgParser *_parser;
+    NSUInteger _depth;
 }
 
 - (void)convert
@@ -63,6 +68,8 @@
     srcFile = [srcFile stringByAppendingPathExtension:@"json"];
     [pathComponents addObject:srcFile];
     relPath = [NSString pathWithComponents:pathComponents];
+
+    _jsonPath = relPath;
 
     cwd = NSFileManager.defaultManager.currentDirectoryPath;
     [pathComponents insertObject:cwd atIndex:0];
@@ -148,6 +155,53 @@
     }
 
     /* [HOOrgParser parseJSONAtPath:jsonPath] */
+}
+
+- (void)parse
+{
+    _parser = [[HOOrgParser alloc] initWithJSONAtPath:_jsonPath];
+    _parser.delegate = self;
+    [_parser parse];
+}
+
+- (void)parserDidStartDocument:(HOOrgParser *)parser
+{
+    log_indent(_depth++, "org doc start\n", "");
+    //fprintf(stderr, "org doc start\n");
+}
+
+- (void)parserDidEndDocument:(HOOrgParser *)parser
+{
+    //fprintf(stderr, "org doc end\n");
+    log_indent(--_depth, "org doc end\n", "");
+}
+
+- (void)parser:(HOOrgParser *)parser
+    parseDocumentProperties:(NSDictionary<NSString *, id> *)properties
+{
+    log_indent(_depth, "doc properties\n", "");
+}
+
+- (void)parser:(HOOrgParser *)parser didStartNode:(NSString *)nodeType
+    reference:(NSString *)ref
+    properties:(NSDictionary<NSString *, id> *)properties
+{
+    log_indent(_depth++, "node start %s\n", nodeType.UTF8String);
+}
+
+- (void)parser:(HOOrgParser *)parser didEndNode:(NSString *)nodeType
+{
+    log_indent(--_depth, "node end %s\n", nodeType.UTF8String);
+}
+
+- (void)parser:(HOOrgParser *)parser parseString:(NSString *)str
+{
+    log_indent(_depth, "%s\n", str.UTF8String);
+}
+
+- (void)parser:(HOOrgParser *)parser parseError:(NSString *)message
+{
+
 }
 
 @end

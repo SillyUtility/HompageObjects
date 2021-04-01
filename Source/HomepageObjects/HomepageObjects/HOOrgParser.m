@@ -7,22 +7,142 @@
 //
 
 #import "HOOrgParser.h"
+#import "HOUtils.h"
 
-@implementation HOOrgParser
+@implementation HOOrgParser {
+    id _document;
+}
 
 - initWithJSONAtPath:(NSString *)path
 {
+    NSError *err;
+    NSData *documentData;
+
     if (!(self = [super init]))
         return self;
 
-    // ...
+    documentData = [NSData
+        dataWithContentsOfFile:path
+        options:0
+        error:&err
+    ];
+    _document = [NSJSONSerialization
+        JSONObjectWithData:documentData
+        options:NSJSONReadingFragmentsAllowed
+        error:&err
+    ];
 
     return self;
 }
 
 - (BOOL)parse
 {
+    if (![_document isKindOfClass:NSDictionary.class])
+        return NO;
+
+    if ([_document[@"$$data_type"] isEqualToString:@"org-document"]) {
+        [self.delegate parserDidStartDocument:self];
+        if (![self parseDocument:_document])
+            return NO;
+        [self.delegate parserDidEndDocument:self];
+        return YES;
+    }
+
     return NO;
+}
+
+/*
+{
+  "$$data_type": "org-document",
+  "title": [
+    "Home"
+  ],
+  "file_tags": {
+  },
+  "author": [
+    "Eddie Hillenbrand"
+  ],
+  "creator": "Emacs 27.1 (Org mode 9.3)",
+  "date": [
+    "2021-03-05"
+  ],
+  "description": [],
+  "email": "eddie@Graphdyne-MacBookPro0.local",
+  "language": "en",
+
+  ...
+
+}
+*/
+- (BOOL)parseDocument:(NSDictionary *)doc
+{
+    NSArray *nodes;
+    NSMutableDictionary *properties;
+
+    properties = NSMutableDictionary.dictionary;
+
+    // for each key that is not $$data_type or contents
+    for (NSString *key in doc) {
+        if ([key isEqualToString:@"$$data_type"])
+            continue;
+        if ([key isEqualToString:@"contents"])
+            continue;
+        properties[key] = [doc[key] copy];
+    }
+
+    [self.delegate parser:self parseDocumentProperties:properties];
+
+    nodes = doc[@"contents"];
+    if (!nodes)
+        return YES;
+
+    return [self parseNodes:nodes];
+}
+
+- (BOOL)parseNodes:(NSArray *)nodes
+{
+    for (NSDictionary *node in nodes)
+        if (![self parseNode:node])
+            return NO;
+    return YES;
+}
+
+- (BOOL)parseNode:(id)node
+{
+    if ([node isKindOfClass:NSString.class]) {
+        [self.delegate parser:self parseString:(NSString *)node];
+        return YES;
+    }
+    if ([node isKindOfClass:NSDictionary.class])
+        return [self parseDictionaryNode:(NSDictionary *)node];
+    return NO;
+}
+
+- (BOOL)parseDictionaryNode:(NSDictionary *)node
+{
+    NSString *ref, *type;
+    NSMutableDictionary *properties;
+
+    ref = [node[@"ref"] copy];
+    type = [node[@"type"] copy];
+    properties = NSMutableDictionary.dictionary;
+
+    for (NSString *key in node[@"properties"]) {
+        if ([key isEqualToString:@"$$data_type"])
+            continue;
+        properties[key] = [node[@"properties"][key] copy];
+    }
+
+    [self.delegate parser:self
+        didStartNode:type
+        reference:ref
+        properties:properties
+    ];
+    if (![self parseNodes:node[@"contents"]])
+        return NO;
+    [self.delegate parser:self didEndNode:type];
+
+    return YES;
 }
 
 - (void)abortParsing

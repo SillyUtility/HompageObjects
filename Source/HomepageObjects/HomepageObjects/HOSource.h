@@ -7,10 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "HOOrgParser.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class HOConfig;
+@protocol HOOrgParserDelegate;
 
 @interface HOSource : NSObject
 - initWithPath:(NSString *)path config:(HOConfig *)config;
@@ -22,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property NSString *HTML;
 
 - (void)convert;
+- (void)parse;
 
 @end
 
@@ -29,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
  * Takes a .org file, runs it through emacs, loads the .json dump,
  * then compiles it to HTML.
  */
-@interface HOOrgSource : HOSource
+@interface HOOrgSource : HOSource <HOOrgParserDelegate>
 
 @end
 

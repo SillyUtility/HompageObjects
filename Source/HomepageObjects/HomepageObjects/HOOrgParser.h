@@ -39,10 +39,15 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)parserDidStartDocument:(HOOrgParser *)parser;
 - (void)parserDidEndDocument:(HOOrgParser *)parser;
 
+- (void)parser:(HOOrgParser *)parser
+    parseDocumentProperties:(NSDictionary<NSString *, id> *)properties;
+
 - (void)parser:(HOOrgParser *)parser didStartNode:(NSString *)nodeType
     reference:(NSString *)ref
     properties:(NSDictionary<NSString *, id> *)properties;
 - (void)parser:(HOOrgParser *)parser didEndNode:(NSString *)nodeType;
+
+- (void)parser:(HOOrgParser *)parser parseString:(NSString *)str;
 
 - (void)parser:(HOOrgParser *)parser parseError:(NSString *)message;
 

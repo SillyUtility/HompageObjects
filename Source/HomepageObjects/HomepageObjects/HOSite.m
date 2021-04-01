@@ -11,6 +11,8 @@
 #import "HOSite.h"
 #import "HOConfig.h"
 #import "HOContent.h"
+#import "HOUtils.h"
+
 #import "NSFileManager+HOAdditons.h"
 
 @implementation HOSite {
@@ -96,12 +98,6 @@
     fprintf(stderr, "Initializing %s\n", siteDirectory.UTF8String);
     templatePath = [self siteTemplatePathForTemplateName:template];
     [self copyConentsAtPath:templatePath toPath:siteDirectory];
-}
-
-static void log_indent(NSUInteger level, const char *fmt, const char *arg) {
-    while (level--)
-        fprintf(stderr, "  ");
-    fprintf(stderr, fmt, arg);
 }
 
 + (void)copyConentsAtPath:(NSString *)srcPath toPath:(NSString *)destPath
