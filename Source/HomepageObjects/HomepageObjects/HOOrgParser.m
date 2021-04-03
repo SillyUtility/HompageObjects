@@ -122,6 +122,7 @@
 {
     NSString *ref, *type;
     NSMutableDictionary *properties;
+    BOOL space;
 
     ref = [node[@"ref"] copy];
     type = [node[@"type"] copy];
@@ -132,6 +133,17 @@
             continue;
         properties[key] = [node[@"properties"][key] copy];
     }
+    space = [properties[@"post-blank"] boolValue];
+
+    if ([properties[@"type"] isEqualToString:@"ordered"])
+        type = @"ordered-list";
+    if ([properties[@"type"] isEqualToString:@"unordered"])
+        type = @"unordered-list";
+    if ([properties[@"type"] isEqualToString:@"descriptive"])
+        type = @"description-list";
+    if ([type isEqualToString:@"item"])
+        if ([properties[@"tag"] count] > 0)
+            type = @"description-term";
 
     [self.delegate parser:self
         didStartNode:type
@@ -140,7 +152,10 @@
     ];
     if (![self parseNodes:node[@"contents"]])
         return NO;
-    [self.delegate parser:self didEndNode:type];
+    [self.delegate parser:self
+        didEndNode:type
+        trailingSpace:space
+    ];
 
     return YES;
 }

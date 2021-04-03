@@ -205,6 +205,10 @@
         [_html appendString:@"<u>"];
     if ([nodeType isEqualToString:@"strikethrough"])
         [_html appendString:@"<s>"];
+    if ([nodeType isEqualToString:@"subscript"])
+        [_html appendString:@"<sub>"];
+    if ([nodeType isEqualToString:@"superscript"])
+        [_html appendString:@"<sup>"];
     if ([nodeType isEqualToString:@"verbatim"])
         [_html appendFormat:@"<code>%@", enc(properties[@"value"])];
     if ([nodeType isEqualToString:@"code"])
@@ -223,9 +227,24 @@
         [_html appendString:@"<tr>"];
     if ([nodeType isEqualToString:@"table-cell"])
         [_html appendString:@"<td>"];
+    if ([nodeType isEqualToString:@"entity"])
+        [_html appendString:properties[@"html"]];
+    if ([nodeType isEqualToString:@"ordered-list"])
+            [_html appendString:@"<ol>"];
+    if ([nodeType isEqualToString:@"unordered-list"])
+            [_html appendString:@"<ul>"];
+    if ([nodeType isEqualToString:@"item"])
+        [_html appendString:@"<li>"];
+    if ([nodeType isEqualToString:@"description-list"])
+        [_html appendString:@"<dl>"];
+    if ([nodeType isEqualToString:@"description-term"])
+        [_html appendFormat:@"<dt>%@</dt><dd>",
+            [self parseMarkupList:properties[@"tag"]]];
 }
 
-- (void)parser:(HOOrgParser *)parser didEndNode:(NSString *)nodeType
+- (void)parser:(HOOrgParser *)parser
+    didEndNode:(NSString *)nodeType
+    trailingSpace:(BOOL)space
 {
     log_indent(--_depth, "node end %s\n", nodeType.UTF8String);
     if ([nodeType isEqualToString:@"headline"]) {
@@ -241,6 +260,10 @@
         [_html appendString:@"</u>"];
     if ([nodeType isEqualToString:@"strikethrough"])
         [_html appendString:@"</s>"];
+    if ([nodeType isEqualToString:@"subscript"])
+        [_html appendString:@"</sub>"];
+    if ([nodeType isEqualToString:@"superscript"])
+        [_html appendString:@"</sup>"];
     if ([nodeType isEqualToString:@"verbatim"])
         [_html appendString:@"</code>"];
     if ([nodeType isEqualToString:@"code"])
@@ -253,11 +276,25 @@
         [_html appendString:@"</tr>"];
     if ([nodeType isEqualToString:@"table-cell"])
         [_html appendString:@"</td>"];
+    if ([nodeType isEqualToString:@"ordered-list"])
+            [_html appendString:@"</ol>"];
+    if ([nodeType isEqualToString:@"unordered-list"])
+            [_html appendString:@"</ul>"];
+    if ([nodeType isEqualToString:@"item"])
+        [_html appendString:@"</li>"];
+    if ([nodeType isEqualToString:@"description-list"])
+        [_html appendString:@"</dl>"];
+    if ([nodeType isEqualToString:@"description-term"])
+        [_html appendString:@"</dd>"];
+
+    if (space)
+        [_html appendString:@" "];
 }
 
 - (void)parser:(HOOrgParser *)parser parseString:(NSString *)str
 {
     log_indent(_depth, "%s\n", str.UTF8String);
+    // TODO: process "\-", "--", "---", and "..."
     [_html appendString:str];
 }
 

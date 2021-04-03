@@ -45,7 +45,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)parser:(HOOrgParser *)parser didStartNode:(NSString *)nodeType
     reference:(NSString *)ref
     properties:(NSDictionary<NSString *, id> *)properties;
-- (void)parser:(HOOrgParser *)parser didEndNode:(NSString *)nodeType;
+- (void)parser:(HOOrgParser *)parser
+    didEndNode:(NSString *)nodeType trailingSpace:(BOOL)space;
 
 - (void)parser:(HOOrgParser *)parser parseString:(NSString *)str;
 
