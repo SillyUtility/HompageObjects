@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property NSString *path;
 @property HOConfig *config;
 
-@property NSDictionary *properties;
+@property NSMutableDictionary *properties;
 @property NSString *HTML;
 
 - (void)convert;

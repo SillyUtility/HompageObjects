@@ -85,6 +85,7 @@
 /* JSExport */
 - (NSString *)source
 {
+#if 0
     NSString *src;
     NSError *err;
 
@@ -96,6 +97,7 @@
         fprintf(stderr, "source err %s %s\n",
             self.path.UTF8String,
             err.localizedDescription.UTF8String);
+#endif
 
     // TODO: convert .org to HTML
     // TODO: convert .md to HTML
@@ -107,7 +109,7 @@
     [sourceFile convert];
     [sourceFile parse];
 
-    return src;
+    return sourceFile.HTML;
 }
 
 - (NSArray<NSString *> *)layouts

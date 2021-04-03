@@ -36,6 +36,7 @@
     NSString *_jsonPath;
     HOOrgParser *_parser;
     NSUInteger _depth;
+    NSMutableString *_html;
 }
 
 - (void)convert
@@ -159,6 +160,7 @@
 
 - (void)parse
 {
+    _html = NSMutableString.string;
     _parser = [[HOOrgParser alloc] initWithJSONAtPath:_jsonPath];
     _parser.delegate = self;
     [_parser parse];
@@ -167,19 +169,18 @@
 - (void)parserDidStartDocument:(HOOrgParser *)parser
 {
     log_indent(_depth++, "org doc start\n", "");
-    //fprintf(stderr, "org doc start\n");
 }
 
 - (void)parserDidEndDocument:(HOOrgParser *)parser
 {
-    //fprintf(stderr, "org doc end\n");
     log_indent(--_depth, "org doc end\n", "");
 }
 
 - (void)parser:(HOOrgParser *)parser
     parseDocumentProperties:(NSDictionary<NSString *, id> *)properties
 {
-    log_indent(_depth, "doc properties\n", "");
+    log_indent(_depth, "props %s\n", properties.description.UTF8String);
+    [self.properties addEntriesFromDictionary:properties];
 }
 
 - (void)parser:(HOOrgParser *)parser didStartNode:(NSString *)nodeType
@@ -187,21 +188,142 @@
     properties:(NSDictionary<NSString *, id> *)properties
 {
     log_indent(_depth++, "node start %s\n", nodeType.UTF8String);
+    if ([nodeType isEqualToString:@"headline"]) {
+        [_html appendFormat:@"<section>\n\t<header>\n\t\t<h%@>%@</h%@>\n\t</header>\n",
+            properties[@"level"],
+            [self parseMarkupList:properties[@"title"]],
+            properties[@"level"]
+        ];
+    }
+    if ([nodeType isEqualToString:@"paragraph"])
+        [_html appendString:@"<p>"];
+    if ([nodeType isEqualToString:@"italic"])
+        [_html appendString:@"<i>"];
+    if ([nodeType isEqualToString:@"bold"])
+        [_html appendString:@"<b>"];
+    if ([nodeType isEqualToString:@"underline"])
+        [_html appendString:@"<u>"];
+    if ([nodeType isEqualToString:@"strikethrough"])
+        [_html appendString:@"<s>"];
+    if ([nodeType isEqualToString:@"verbatim"])
+        [_html appendFormat:@"<code>%@", enc(properties[@"value"])];
+    if ([nodeType isEqualToString:@"code"])
+        [_html appendFormat:@"<code>%@", enc(properties[@"value"])];
+    if ([nodeType isEqualToString:@"src-block"])
+        [_html appendFormat:@"<pre>%@", enc(properties[@"value"])];
+    if ([nodeType isEqualToString:@"table"]) {
+        // properties[@"name"]
+        // properties[@"attr_html"]
+        [_html appendString:@"<table>"];
+        if (properties[@"caption"])
+            [_html appendFormat:@"<caption>%@</caption>",
+                [self parseMarkupList:properties[@"caption"]]];
+    }
+    if ([nodeType isEqualToString:@"table-row"])
+        [_html appendString:@"<tr>"];
+    if ([nodeType isEqualToString:@"table-cell"])
+        [_html appendString:@"<td>"];
 }
 
 - (void)parser:(HOOrgParser *)parser didEndNode:(NSString *)nodeType
 {
     log_indent(--_depth, "node end %s\n", nodeType.UTF8String);
+    if ([nodeType isEqualToString:@"headline"]) {
+        [_html appendFormat:@"</section>\n"];
+    }
+    if ([nodeType isEqualToString:@"paragraph"])
+        [_html appendString:@"</p>"];
+    if ([nodeType isEqualToString:@"italic"])
+        [_html appendString:@"</i>"];
+    if ([nodeType isEqualToString:@"bold"])
+        [_html appendString:@"</b>"];
+    if ([nodeType isEqualToString:@"underline"])
+        [_html appendString:@"</u>"];
+    if ([nodeType isEqualToString:@"strikethrough"])
+        [_html appendString:@"</s>"];
+    if ([nodeType isEqualToString:@"verbatim"])
+        [_html appendString:@"</code>"];
+    if ([nodeType isEqualToString:@"code"])
+        [_html appendString:@"</code>"];
+    if ([nodeType isEqualToString:@"src-block"])
+        [_html appendString:@"</pre>"];
+    if ([nodeType isEqualToString:@"table"])
+        [_html appendString:@"</table>"];
+    if ([nodeType isEqualToString:@"table-row"])
+        [_html appendString:@"</tr>"];
+    if ([nodeType isEqualToString:@"table-cell"])
+        [_html appendString:@"</td>"];
 }
 
 - (void)parser:(HOOrgParser *)parser parseString:(NSString *)str
 {
     log_indent(_depth, "%s\n", str.UTF8String);
+    [_html appendString:str];
 }
 
 - (void)parser:(HOOrgParser *)parser parseError:(NSString *)message
 {
 
+}
+
+NSString *enc(NSString *s)
+{
+    NSString *r = s;
+    r = [r stringByReplacingOccurrencesOfString:@"&" withString:@"&amp;"];
+    r = [r stringByReplacingOccurrencesOfString:@"<" withString:@"&lt;"];
+    r = [r stringByReplacingOccurrencesOfString:@">" withString:@"&gt;"];
+    r = [r stringByReplacingOccurrencesOfString:@"\"" withString:@"&quot;"];
+    r = [r stringByReplacingOccurrencesOfString:@"'" withString:@"&apos;"];
+    return r;
+}
+
+- (NSString *)parseMarkupList:(NSArray *)markup
+{
+    NSMutableString *ret;
+    ret = NSMutableString.string;
+    for (id node in markup) {
+        if ([node isKindOfClass:NSString.class]) {
+            [ret appendString:node];
+            continue;
+        }
+        if ([node isKindOfClass:NSDictionary.class]) {
+            [ret appendString:[self parseMarkupNode:node]];
+            continue;
+        }
+        if ([node isKindOfClass:NSArray.class]) {
+            [ret appendString:[self parseMarkupList:node]];
+            continue;
+        }
+    }
+    return (NSString *)ret;
+}
+
+- (NSString *)parseMarkupNode:(NSDictionary *)node
+{
+    NSMutableString *ret;
+    ret = NSMutableString.string;
+    if ([node[@"type"] isEqualToString:@"italic"]) {
+        [ret appendFormat:@"<i>%@</i>",
+            [self parseMarkupList:node[@"contents"]]];
+    }
+    if ([node[@"type"] isEqualToString:@"bold"]) {
+        [ret appendFormat:@"<b>%@</b>",
+            [self parseMarkupList:node[@"contents"]]];
+    }
+    if ([node[@"type"] isEqualToString:@"underline"]) {
+        [ret appendFormat:@"<u>%@</u>",
+            [self parseMarkupList:node[@"contents"]]];
+    }
+    if ([node[@"type"] isEqualToString:@"strikethrough"]) {
+        [ret appendFormat:@"<s>%@</s>",
+            [self parseMarkupList:node[@"contents"]]];
+    }
+    return (NSString *)ret;
+}
+
+- (NSString *)HTML
+{
+    return (NSString *)_html;
 }
 
 @end
