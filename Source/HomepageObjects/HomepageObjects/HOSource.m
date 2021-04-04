@@ -189,11 +189,15 @@
 {
     log_indent(_depth++, "node start %s\n", nodeType.UTF8String);
     if ([nodeType isEqualToString:@"headline"]) {
-        [_html appendFormat:@"<section>\n\t<header>\n\t\t<h%@>%@</h%@>\n\t</header>\n",
+        [_html appendString:@"<section>"];
+
+        [_html appendFormat:@"<h%@ id=\"%@\">%@</h%@>",
             properties[@"level"],
+            [self makeIdentifier:properties[@"raw-value"]],
             [self parseMarkupList:properties[@"title"]],
             properties[@"level"]
         ];
+        [_html appendString:@"</header>"];
     }
     if ([nodeType isEqualToString:@"paragraph"])
         [_html appendString:@"<p>"];
@@ -240,6 +244,11 @@
     if ([nodeType isEqualToString:@"description-term"])
         [_html appendFormat:@"<dt>%@</dt><dd>",
             [self parseMarkupList:properties[@"tag"]]];
+    if ([nodeType isEqualToString:@"link"])
+        [_html appendFormat:@"<a href=\"%@\">",
+            properties[@"raw-link"]];
+    if ([nodeType isEqualToString:@"latex-fragment"])
+        [_html appendString:properties[@"value"]];
 }
 
 - (void)parser:(HOOrgParser *)parser
@@ -286,6 +295,8 @@
         [_html appendString:@"</dl>"];
     if ([nodeType isEqualToString:@"description-term"])
         [_html appendString:@"</dd>"];
+    if ([nodeType isEqualToString:@"link"])
+        [_html appendString:@"</a>"];
 
     if (space)
         [_html appendString:@" "];
@@ -301,6 +312,33 @@
 - (void)parser:(HOOrgParser *)parser parseError:(NSString *)message
 {
 
+}
+
+- (NSString *)makeIdentifier:(NSString *)str
+{
+    NSMutableString *ident;
+    NSUInteger i;
+    unichar c;
+    NSCharacterSet *wsSet;
+
+    ident = NSMutableString.string;
+    wsSet = NSCharacterSet.whitespaceAndNewlineCharacterSet;
+    str = [str
+        stringByApplyingTransform:NSStringTransformToLatin
+        reverse:NO
+    ];
+
+    for (i = 0; i < str.length; i++) {
+        c = [str characterAtIndex:i];
+        if ([wsSet characterIsMember:c])
+            c = '-';
+        else if (isalpha(c))
+            c = tolower(c);
+        else
+            continue;
+        [ident appendFormat:@"%c", c];
+    }
+    return ident;
 }
 
 NSString *enc(NSString *s)
