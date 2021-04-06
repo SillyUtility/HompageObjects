@@ -22,6 +22,7 @@
 
     _path = path;
     _config = config;
+    _properties = NSMutableDictionary.dictionary;
 
     return self;
 }
@@ -183,11 +184,33 @@
     [self.properties addEntriesFromDictionary:properties];
 }
 
-- (void)parser:(HOOrgParser *)parser didStartNode:(NSString *)nodeType
+- (void)parser:(HOOrgParser *)parser
+    didStartNode:(NSString *)nodeType
     reference:(NSString *)ref
     properties:(NSDictionary<NSString *, id> *)properties
 {
     log_indent(_depth++, "node start %s\n", nodeType.UTF8String);
+
+    if ([nodeType isEqualToString:@"keyword"]) {
+        if ([properties[@"key"] hasPrefix:@"HTML_HEAD"]) {
+            if (self.properties[properties[@"key"]]) {
+                self.properties[properties[@"key"]] =
+                    [self.properties[properties[@"key"]]
+                        stringByAppendingFormat:@"\n%@",
+                        properties[@"value"]
+                    ];
+            } else {
+                self.properties[properties[@"key"]] = properties[@"value"];
+            }
+        } else {
+            if ([properties[@"key"] isEqualToString:@"HTML"])
+                [_html appendFormat:@"\n%@", properties[@"value"]];
+            else
+                self.properties[properties[@"key"]] = properties[@"value"];
+        }
+    }
+    if ([nodeType isEqualToString:@"special-block"])
+        [_html appendFormat:@"<%@>", properties[@"type"]];
     if ([nodeType isEqualToString:@"headline"]) {
             [_html appendString:@"<section><header>"];
             [_html appendFormat:@"<h%@ id=\"%@\">%@</h%@>",
@@ -298,11 +321,14 @@
 - (void)parser:(HOOrgParser *)parser
     didEndNode:(NSString *)nodeType
     trailingSpace:(BOOL)space
+    properties:(nonnull NSDictionary<NSString *,id> *)properties
 {
     log_indent(--_depth, "node end %s\n", nodeType.UTF8String);
-    if ([nodeType isEqualToString:@"headline"]) {
+
+    if ([nodeType isEqualToString:@"special-block"])
+        [_html appendFormat:@"</%@>", properties[@"type"]];
+    if ([nodeType isEqualToString:@"headline"])
         [_html appendFormat:@"</section>\n"];
-    }
     if ([nodeType isEqualToString:@"paragraph"])
         [_html appendString:@"</p>"];
     if ([nodeType isEqualToString:@"italic"])
@@ -351,10 +377,8 @@
         [_html appendString:@"</pre></blockquote>"];
     if ([nodeType isEqualToString:@"center-block"])
         [_html appendString:@"</center>"];
-    if ([nodeType isEqualToString:@"footnote-headline"]) {
-        [_html appendString:@"</ul>"];
-        [_html appendString:@"</footer>"];
-    }
+    if ([nodeType isEqualToString:@"footnote-headline"])
+        [_html appendString:@"</ul></footer>"];
     if ([nodeType isEqualToString:@"footnote-definition"])
         [_html appendFormat:@"</li>"];
 

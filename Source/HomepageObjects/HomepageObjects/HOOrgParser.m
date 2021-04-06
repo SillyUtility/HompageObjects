@@ -165,6 +165,7 @@
     [self.delegate parser:self
         didEndNode:type
         trailingSpace:space
+        properties:properties
     ];
 
     return YES;

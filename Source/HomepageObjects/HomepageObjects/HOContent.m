@@ -109,6 +109,8 @@
     [sourceFile convert];
     [sourceFile parse];
 
+    fprintf(stderr, "sourceFile props %s", sourceFile.properties.description.UTF8String);
+
     return sourceFile.HTML;
 }
 
