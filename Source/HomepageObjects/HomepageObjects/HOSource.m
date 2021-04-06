@@ -290,7 +290,7 @@
         [_html appendString:@"<ul>"];
     }
     if ([nodeType isEqualToString:@"footnote-definition"])
-        [_html appendFormat:@"<li id=\"#fn:%@\">[%@] ",
+        [_html appendFormat:@"<li id=\"fn:%@\">[%@] ",
             properties[@"label"],
             properties[@"label"]];
 }
