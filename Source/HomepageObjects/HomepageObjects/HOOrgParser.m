@@ -145,6 +145,16 @@
         if ([properties[@"tag"] count] > 0)
             type = @"description-term";
 
+    if ([type isEqualToString:@"headline"])
+        if ([properties[@"footnote-section-p"] boolValue])
+            type = @"footnote-headline";
+
+    // type `paragraph' prop `name' and `caption'
+    // content[0].properties.inline-image
+    // => figure figcaption img
+    if ([self nodeIsFigure:node])
+        type = @"figure";
+
     [self.delegate parser:self
         didStartNode:type
         reference:ref
@@ -158,6 +168,17 @@
     ];
 
     return YES;
+}
+
+- (BOOL)nodeIsFigure:(NSDictionary *)node
+{
+    if ([node[@"type"] isEqualToString:@"paragraph"]) {
+        if ([node[@"contents"] count] > 0)
+            if ([node[@"contents"][0] isKindOfClass:NSDictionary.class])
+                if ([[node[@"contents"][0] valueForKeyPath:@"properties.is-inline-image"] boolValue])
+                    return YES;
+    }
+    return NO;
 }
 
 - (void)abortParsing

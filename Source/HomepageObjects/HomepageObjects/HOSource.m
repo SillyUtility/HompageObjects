@@ -189,15 +189,13 @@
 {
     log_indent(_depth++, "node start %s\n", nodeType.UTF8String);
     if ([nodeType isEqualToString:@"headline"]) {
-        [_html appendString:@"<section>"];
-
-        [_html appendFormat:@"<h%@ id=\"%@\">%@</h%@>",
-            properties[@"level"],
-            [self makeIdentifier:properties[@"raw-value"]],
-            [self parseMarkupList:properties[@"title"]],
-            properties[@"level"]
-        ];
-        [_html appendString:@"</header>"];
+            [_html appendString:@"<section><header>"];
+            [_html appendFormat:@"<h%@ id=\"%@\">%@</h%@>",
+                properties[@"level"],
+                [self makeIdentifier:properties[@"raw-value"]],
+                [self parseMarkupList:properties[@"title"]],
+                properties[@"level"]];
+            [_html appendString:@"</header>"];
     }
     if ([nodeType isEqualToString:@"paragraph"])
         [_html appendString:@"<p>"];
@@ -217,6 +215,8 @@
         [_html appendFormat:@"<code>%@", enc(properties[@"value"])];
     if ([nodeType isEqualToString:@"code"])
         [_html appendFormat:@"<code>%@", enc(properties[@"value"])];
+    if ([nodeType isEqualToString:@"example-block"])
+        [_html appendFormat:@"<pre>%@", enc(properties[@"value"])];
     if ([nodeType isEqualToString:@"src-block"])
         [_html appendFormat:@"<pre>%@", enc(properties[@"value"])];
     if ([nodeType isEqualToString:@"table"]) {
@@ -244,11 +244,55 @@
     if ([nodeType isEqualToString:@"description-term"])
         [_html appendFormat:@"<dt>%@</dt><dd>",
             [self parseMarkupList:properties[@"tag"]]];
-    if ([nodeType isEqualToString:@"link"])
-        [_html appendFormat:@"<a href=\"%@\">",
-            properties[@"raw-link"]];
+    if ([nodeType isEqualToString:@"link"]) {
+        if ([properties[@"type"] hasPrefix:@"http"]) {
+            [_html appendFormat:@"<a href=\"%@\">",
+                properties[@"raw-link"]];
+            if ([properties[@"format"] isEqualToString:@"plain"])
+                [_html appendString:properties[@"raw-link"]];
+        } else if ([properties[@"type"] isEqualToString:@"file"]) {
+            if ([properties[@"is-inline-image"] boolValue]) {
+                [_html appendFormat:@"<img src=\"%@\">",
+                    properties[@"raw-link"]];
+            }
+        } else if ([properties[@"type"] isEqualToString:@"fuzzy"]) {
+            [_html appendFormat:@"<a href=\"#%@\">",
+                [self makeIdentifier:properties[@"raw-link"]]];
+        }
+    }
+    if ([nodeType isEqualToString:@"footnote-reference"])
+        [_html appendFormat:@"[<a href=\"#fn:%@\">%@</a>]",
+            properties[@"label"],
+            properties[@"label"]];
     if ([nodeType isEqualToString:@"latex-fragment"])
         [_html appendString:properties[@"value"]];
+    if ([nodeType isEqualToString:@"figure"]) {
+        [_html appendString:@"<figure>"];
+        if (properties[@"caption"])
+            [_html appendFormat:@"<figcaption>%@</figcaption>",
+                [self parseMarkupList:properties[@"caption"]]];
+    }
+    if ([nodeType isEqualToString:@"horizontal-rule"])
+        [_html appendString:@"<hr>"];
+    if ([nodeType isEqualToString:@"quote-block"])
+        [_html appendString:@"<blockquote>"];
+    if ([nodeType isEqualToString:@"verse-block"])
+        [_html appendString:@"<blockquote><pre>"];
+    if ([nodeType isEqualToString:@"center-block"])
+        [_html appendString:@"<center>"];
+    if ([nodeType isEqualToString:@"footnote-headline"]) {
+        [_html appendString:@"<footer>"];
+        [_html appendFormat:@"<h%@ id=\"%@\">%@</h%@>",
+            properties[@"level"],
+            [self makeIdentifier:properties[@"raw-value"]],
+            [self parseMarkupList:properties[@"title"]],
+            properties[@"level"]];
+        [_html appendString:@"<ul>"];
+    }
+    if ([nodeType isEqualToString:@"footnote-definition"])
+        [_html appendFormat:@"<li id=\"#fn:%@\">[%@] ",
+            properties[@"label"],
+            properties[@"label"]];
 }
 
 - (void)parser:(HOOrgParser *)parser
@@ -277,6 +321,8 @@
         [_html appendString:@"</code>"];
     if ([nodeType isEqualToString:@"code"])
         [_html appendString:@"</code>"];
+    if ([nodeType isEqualToString:@"example-block"])
+        [_html appendString:@"</pre>"];
     if ([nodeType isEqualToString:@"src-block"])
         [_html appendString:@"</pre>"];
     if ([nodeType isEqualToString:@"table"])
@@ -286,9 +332,9 @@
     if ([nodeType isEqualToString:@"table-cell"])
         [_html appendString:@"</td>"];
     if ([nodeType isEqualToString:@"ordered-list"])
-            [_html appendString:@"</ol>"];
+        [_html appendString:@"</ol>"];
     if ([nodeType isEqualToString:@"unordered-list"])
-            [_html appendString:@"</ul>"];
+        [_html appendString:@"</ul>"];
     if ([nodeType isEqualToString:@"item"])
         [_html appendString:@"</li>"];
     if ([nodeType isEqualToString:@"description-list"])
@@ -297,6 +343,20 @@
         [_html appendString:@"</dd>"];
     if ([nodeType isEqualToString:@"link"])
         [_html appendString:@"</a>"];
+    if ([nodeType isEqualToString:@"figure"])
+        [_html appendString:@"</figure>"];
+    if ([nodeType isEqualToString:@"quote-block"])
+        [_html appendString:@"</blockquote>"];
+    if ([nodeType isEqualToString:@"verse-block"])
+        [_html appendString:@"</pre></blockquote>"];
+    if ([nodeType isEqualToString:@"center-block"])
+        [_html appendString:@"</center>"];
+    if ([nodeType isEqualToString:@"footnote-headline"]) {
+        [_html appendString:@"</ul>"];
+        [_html appendString:@"</footer>"];
+    }
+    if ([nodeType isEqualToString:@"footnote-definition"])
+        [_html appendFormat:@"</li>"];
 
     if (space)
         [_html appendString:@" "];
@@ -327,6 +387,9 @@
         stringByApplyingTransform:NSStringTransformToLatin
         reverse:NO
     ];
+
+    // TODO: allow URLFragmentAllowedCharacterSet or at least the
+    // following set of characters  :  -  _  ~  .  +
 
     for (i = 0; i < str.length; i++) {
         c = [str characterAtIndex:i];
