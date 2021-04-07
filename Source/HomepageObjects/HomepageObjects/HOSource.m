@@ -184,6 +184,70 @@
     [self.properties addEntriesFromDictionary:properties];
 }
 
+- (void)emitSection:(NSDictionary<NSString *, id> *)properties
+{
+    NSNumber *level;
+    NSString *ident, *title;
+
+    level = properties[@"level"];
+    ident = [self makeIdentifier:properties[@"raw-value"]];
+    title = [self parseMarkupList:properties[@"title"]];
+
+    [_html appendString:@"<section><header>"];
+    [_html appendFormat:@"<h%@ id=\"%@\">%@</h%@>",
+        level, ident, title, level];
+    [_html appendString:@"</header>"];
+}
+
+- (void)emitTable:(NSDictionary<NSString *, id> *)properties
+{
+    NSString *name;
+    NSString *attrs;
+
+    name = [self makeIdentifier:properties[@"name"]];
+    attrs = [self parseAttributes:properties[@"attr_html"]];
+
+    //[_html appendString:@"<table>"];
+    [_html appendFormat:@"<table%@>", attrs];
+
+    if (properties[@"caption"])
+        [_html appendFormat:@"<caption>%@</caption>",
+            [self parseMarkupList:properties[@"caption"]]];
+}
+
+- (void)emitFigure:(NSDictionary<NSString *, id> *)properties
+{
+    [_html appendString:@"<figure>"];
+    if (properties[@"caption"])
+        [_html appendFormat:@"<figcaption>%@</figcaption>",
+         [self parseMarkupList:properties[@"caption"]]];
+}
+
+- (void)emitExample:(NSDictionary<NSString *, id> *)properties
+{
+    [_html appendFormat:@"<pre>%@", enc(properties[@"value"])];
+}
+
+- (void)emitSource:(NSDictionary<NSString *, id> *)properties
+{
+    [_html appendFormat:@"<pre>%@", enc(properties[@"value"])];
+}
+
+- (void)emitFooter:(NSDictionary<NSString *, id> *)properties
+{
+    NSNumber *level;
+    NSString *ident, *title;
+
+    level = properties[@"level"];
+    ident = [self makeIdentifier:properties[@"raw-value"]];
+    title = [self parseMarkupList:properties[@"title"]];
+
+    [_html appendString:@"<footer>"];
+    [_html appendFormat:@"<h%@ id=\"%@\">%@</h%@>",
+        level, ident, title, level];
+    [_html appendString:@"<ul>"];
+}
+
 - (void)parser:(HOOrgParser *)parser
     didStartNode:(NSString *)nodeType
     reference:(NSString *)ref
@@ -212,13 +276,7 @@
     if ([nodeType isEqualToString:@"special-block"])
         [_html appendFormat:@"<%@>", properties[@"type"]];
     if ([nodeType isEqualToString:@"headline"]) {
-            [_html appendString:@"<section><header>"];
-            [_html appendFormat:@"<h%@ id=\"%@\">%@</h%@>",
-                properties[@"level"],
-                [self makeIdentifier:properties[@"raw-value"]],
-                [self parseMarkupList:properties[@"title"]],
-                properties[@"level"]];
-            [_html appendString:@"</header>"];
+        [self emitSection:properties];
     }
     if ([nodeType isEqualToString:@"paragraph"])
         [_html appendString:@"<p>"];
@@ -239,16 +297,11 @@
     if ([nodeType isEqualToString:@"code"])
         [_html appendFormat:@"<code>%@", enc(properties[@"value"])];
     if ([nodeType isEqualToString:@"example-block"])
-        [_html appendFormat:@"<pre>%@", enc(properties[@"value"])];
+        [self emitExample:properties];
     if ([nodeType isEqualToString:@"src-block"])
-        [_html appendFormat:@"<pre>%@", enc(properties[@"value"])];
+        [self emitSource:properties];
     if ([nodeType isEqualToString:@"table"]) {
-        // properties[@"name"]
-        // properties[@"attr_html"]
-        [_html appendString:@"<table>"];
-        if (properties[@"caption"])
-            [_html appendFormat:@"<caption>%@</caption>",
-                [self parseMarkupList:properties[@"caption"]]];
+        [self emitTable:properties];
     }
     if ([nodeType isEqualToString:@"table-row"])
         [_html appendString:@"<tr>"];
@@ -290,10 +343,7 @@
     if ([nodeType isEqualToString:@"latex-fragment"])
         [_html appendString:properties[@"value"]];
     if ([nodeType isEqualToString:@"figure"]) {
-        [_html appendString:@"<figure>"];
-        if (properties[@"caption"])
-            [_html appendFormat:@"<figcaption>%@</figcaption>",
-                [self parseMarkupList:properties[@"caption"]]];
+        [self emitFigure:properties];
     }
     if ([nodeType isEqualToString:@"horizontal-rule"])
         [_html appendString:@"<hr>"];
@@ -304,13 +354,7 @@
     if ([nodeType isEqualToString:@"center-block"])
         [_html appendString:@"<center>"];
     if ([nodeType isEqualToString:@"footnote-headline"]) {
-        [_html appendString:@"<footer>"];
-        [_html appendFormat:@"<h%@ id=\"%@\">%@</h%@>",
-            properties[@"level"],
-            [self makeIdentifier:properties[@"raw-value"]],
-            [self parseMarkupList:properties[@"title"]],
-            properties[@"level"]];
-        [_html appendString:@"<ul>"];
+        [self emitFooter:properties];
     }
     if ([nodeType isEqualToString:@"footnote-definition"])
         [_html appendFormat:@"<li id=\"fn:%@\">[%@] ",
@@ -481,6 +525,35 @@ NSString *enc(NSString *s)
             [self parseMarkupList:node[@"contents"]]];
     }
     return (NSString *)ret;
+}
+
+- (NSString *)parseAttributes:(NSArray *)attrs
+{
+    NSMutableString *ret;
+    NSString *attrStr, *attr;
+    NSArray *attrComponents;
+    BOOL open = NO;
+
+    ret = NSMutableString.string;
+    for (attrStr in attrs) {
+        attrComponents = [attrStr componentsSeparatedByCharactersInSet:
+            NSCharacterSet.whitespaceCharacterSet];
+        for (attr in attrComponents) {
+            if ([attr hasPrefix:@":"]) {
+                [ret appendFormat:@"%@ %@=\"",
+                    open ? @"\"" : @"",
+                    [attr substringFromIndex:1]
+                ];
+                open = YES;
+            } else
+                [ret appendFormat:@" %@", attr];
+        }
+        if (open)
+            [ret appendString:@"\" "];
+        open = NO;
+    }
+
+    return ret;
 }
 
 - (NSString *)HTML
