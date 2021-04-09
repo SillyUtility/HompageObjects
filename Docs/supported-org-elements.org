@@ -1,0 +1,89 @@
+#+TITLE: Supported Org-mode Elements
+#+DATE: 2021-04-08
+#+STARTUP: showall
+
+* Org-mode native elements
+
+- [X] bold
+- [X] center-block
+- [ ] clock
+- [X] code
+- [ ] drawer
+- [ ] dynamic-block
+- [X] entity
+- [X] example-block
+- [ ] export-block
+- [ ] export-snippet
+- [ ] fixed-width
+- [X] footnote-definition
+- [X] footnote-reference
+- [X] headline
+- [X] horizontal-rule
+- [ ] inline-src-block
+- [ ] inlinetask
+- [ ] inner-template
+- [X] italic
+- [X] item
+- [X] keyword
+- [ ] latex-environment
+- [X] latex-fragment
+- [ ] line-break
+- [ ] link
+- [ ] node-property
+- [X] paragraph
+- [X] plain-list
+- [ ] plain-text
+- [ ] planning
+- [ ] property-drawer
+- [X] quote-block
+- [ ] radio-target
+- [ ] section
+- [X] special-block
+- [X] src-block
+- [ ] statistics-cookie
+- [X] strike-through
+- [X] subscript
+- [X] superscript
+- [X] table
+- [X] table-cell
+- [X] table-row
+- [ ] target
+- [ ] template
+- [ ] timestamp
+- [X] underline
+- [X] verbatim
+- [X] verse-block
+
+* HomepageObjects derived elements
+
+- [X] ordered-list
+- [X] unordered-list
+- [X] description-list
+- [X] footnote-headline
+- [X] figure
+
+* HomepageObjects additional options
+
+- HO_PAGE_CSS
+  Page specific CSS
+
+- HO_PAGE_JS
+  Page specific JavaScript
+
+- HO_CATEGORY
+  Category tags
+
+- HO_SOCIAL
+  Speicial social media meta info
+
+- HO_LAYOUT
+  Override the default layout
+
+- HO_OPTIONS
+  - all:nil|all:num
+  - toc:nil|toc:num
+  - sec:nil|sec:num
+  - tbl:nil|tbl:num
+  - fig:nil|fig:num
+  - src:nil|src:num
+  - eq:nil|eq:num

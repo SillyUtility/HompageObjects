@@ -201,14 +201,15 @@
 
 - (void)emitTable:(NSDictionary<NSString *, id> *)properties
 {
-    NSString *name;
-    NSString *attrs;
+    NSString *name, *attrs;
 
-    name = [self makeIdentifier:properties[@"name"]];
     attrs = [self parseAttributes:properties[@"attr_html"]];
 
-    //[_html appendString:@"<table>"];
-    [_html appendFormat:@"<table%@>", attrs];
+    if (properties[@"name"]) {
+        name = [self makeIdentifier:properties[@"name"]];
+        [_html appendFormat:@"<table id=\"%@\"%@", name, attrs];
+    } else
+        [_html appendFormat:@"<table%@>", attrs];
 
     if (properties[@"caption"])
         [_html appendFormat:@"<caption>%@</caption>",
@@ -217,7 +218,16 @@
 
 - (void)emitFigure:(NSDictionary<NSString *, id> *)properties
 {
-    [_html appendString:@"<figure>"];
+    NSString *name, *attrs;
+
+    attrs = [self parseAttributes:properties[@"attr_html"]];
+
+    if (properties[@"name"]) {
+        name = [self makeIdentifier:properties[@"name"]];
+        [_html appendFormat:@"<figure id=\"%@\"%@>", name, attrs];
+    } else
+        [_html appendFormat:@"<figure%@>", attrs];
+
     if (properties[@"caption"])
         [_html appendFormat:@"<figcaption>%@</figcaption>",
          [self parseMarkupList:properties[@"caption"]]];
@@ -247,6 +257,61 @@
         level, ident, title, level];
     [_html appendString:@"<ul>"];
 }
+
+// bold
+// center-block
+// clock
+// code
+// description-list
+// drawer
+// dynamic-block
+// entity
+// example-block
+// export-block
+// export-snippet
+// figure
+// fixed-width
+// footnote-definition
+// footnote-headline
+// footnote-reference
+// headline
+// horizontal-rule
+// inline-src-block
+// inlinetask
+// inner-template
+// italic
+// item
+// keyword
+// latex-environment
+// latex-fragment
+// line-break
+// link
+// node-property
+// ordered-list
+// paragraph
+// plain-list
+// plain-text
+// planning
+// property-drawer
+// quote-block
+// radio-target
+// section
+// special-block
+// src-block
+// statistics-cookie
+// strike-through
+// subscript
+// superscript
+// table
+// table-cell
+// table-row
+// target
+// template
+// timestamp
+// underline
+// unordered-list
+// verbatim
+// verse-block
 
 - (void)parser:(HOOrgParser *)parser
     didStartNode:(NSString *)nodeType
