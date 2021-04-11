@@ -320,6 +320,10 @@
         [self emitExample:properties];
 
     // export-block
+    if ([nodeType isEqualToString:@"export-block"])
+        if ([properties[@"type"] isEqualToString:@"HTML"])
+            [_html appendString:properties[@"value"]];
+
     // export-snippet
 
     // figure
@@ -356,6 +360,9 @@
         [_html appendString:@"<hr>"];
 
     // inline-src-block
+    if ([nodeType isEqualToString:@"inline-src-block"])
+        [_html appendFormat:@"<code>%@</code>", enc(properties[@"value"])];
+
     // inlinetask
     // inner-template
 
@@ -396,6 +403,8 @@
         [_html appendString:properties[@"value"]];
 
     // line-break
+    if ([nodeType isEqualToString:@"line-break"])
+        [_html appendString:@"<br>"];
 
     // link
     if ([nodeType isEqualToString:@"link"]) {
@@ -410,6 +419,9 @@
                     properties[@"raw-link"]];
             }
         } else if ([properties[@"type"] isEqualToString:@"fuzzy"]) {
+            [_html appendFormat:@"<a href=\"#%@\">",
+                [self makeIdentifier:properties[@"raw-link"]]];
+        } else if ([properties[@"type"] isEqualToString:@"radio"]) {
             [_html appendFormat:@"<a href=\"#%@\">",
                 [self makeIdentifier:properties[@"raw-link"]]];
         }
@@ -606,7 +618,7 @@
         [_html appendString:@"</pre>"];
 
     // statistics-cookie
-    
+
     // strike-through
     if ([nodeType isEqualToString:@"strikethrough"])
         [_html appendString:@"</s>"];

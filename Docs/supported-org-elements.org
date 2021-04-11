@@ -12,14 +12,14 @@
 - [ ] dynamic-block
 - [X] entity
 - [X] example-block
-- [ ] export-block
+- [X] export-block
 - [ ] export-snippet
 - [X] fixed-width
 - [X] footnote-definition
 - [X] footnote-reference
 - [X] headline
 - [X] horizontal-rule
-- [ ] inline-src-block
+- [X] inline-src-block
 - [ ] inlinetask
 - [ ] inner-template
 - [X] italic
@@ -27,17 +27,17 @@
 - [X] keyword
 - [X] latex-environment
 - [X] latex-fragment
-- [ ] line-break
+- [X] line-break
 - [ ] link
 - [ ] node-property
 - [X] paragraph
-- [X] plain-list
+- [X] plain-list (handled by derived *-list elements)
 - [ ] plain-text
 - [ ] planning
 - [ ] property-drawer
 - [X] quote-block
 - [ ] radio-target
-- [ ] section
+- [X] section (handled implicitly by headlines)
 - [X] special-block
 - [X] src-block
 - [ ] statistics-cookie
