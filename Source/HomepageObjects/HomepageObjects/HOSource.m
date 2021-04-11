@@ -284,62 +284,90 @@
     properties:(NSDictionary<NSString *, id> *)properties
 {
     log_indent(_depth++, "node start %s\n", nodeType.UTF8String);
-    
+
     // bold
+    if ([nodeType isEqualToString:@"bold"])
+        [_html appendString:@"<b>"];
+
     // center-block
+    if ([nodeType isEqualToString:@"center-block"])
+        [_html appendString:@"<center>"];
+
     // clock
+
     // code
+    if ([nodeType isEqualToString:@"code"])
+        [_html appendFormat:@"<code>%@", enc(properties[@"value"])];
+
     // description-list
+    if ([nodeType isEqualToString:@"description-list"])
+        [_html appendString:@"<dl>"];
+
+    // description-term
+    if ([nodeType isEqualToString:@"description-term"])
+        [_html appendFormat:@"<dt>%@</dt><dd>",
+            [self parseMarkupList:properties[@"tag"]]];
+
     // drawer
     // dynamic-block
+
     // entity
+    if ([nodeType isEqualToString:@"entity"])
+        [_html appendString:properties[@"html"]];
+
     // example-block
+    if ([nodeType isEqualToString:@"example-block"])
+        [self emitExample:properties];
+
     // export-block
     // export-snippet
+
     // figure
+    if ([nodeType isEqualToString:@"figure"])
+        [self emitFigure:properties];
+
     // fixed-width
-    // footnote-definition
+    if ([nodeType isEqualToString:@"fixed-width"])
+        [_html appendFormat:@"<pre>%@</pre>", enc(properties[@"value"])];
+
     // footnote-headline
+    if ([nodeType isEqualToString:@"footnote-headline"]) {
+        [self emitFooter:properties];
+    }
+
+    // footnote-definition
+    if ([nodeType isEqualToString:@"footnote-definition"])
+        [_html appendFormat:@"<li id=\"fn:%@\">[%@] ",
+            properties[@"label"],
+            properties[@"label"]];
+
     // footnote-reference
+    if ([nodeType isEqualToString:@"footnote-reference"])
+        [_html appendFormat:@"[<a href=\"#fn:%@\">%@</a>]",
+            properties[@"label"],
+            properties[@"label"]];
+
     // headline
+    if ([nodeType isEqualToString:@"headline"])
+        [self emitSection:properties];
+
     // horizontal-rule
+    if ([nodeType isEqualToString:@"horizontal-rule"])
+        [_html appendString:@"<hr>"];
+
     // inline-src-block
     // inlinetask
     // inner-template
-    // italic
-    // item
-    // keyword
-    // latex-environment
-    // latex-fragment
-    // line-break
-    // link
-    // node-property
-    // ordered-list
-    // paragraph
-    // plain-list
-    // plain-text
-    // planning
-    // property-drawer
-    // quote-block
-    // radio-target
-    // section
-    // special-block
-    // src-block
-    // statistics-cookie
-    // strike-through
-    // subscript
-    // superscript
-    // table
-    // table-cell
-    // table-row
-    // target
-    // template
-    // timestamp
-    // underline
-    // unordered-list
-    // verbatim
-    // verse-block
 
+    // italic
+    if ([nodeType isEqualToString:@"italic"])
+        [_html appendString:@"<i>"];
+
+    // item
+    if ([nodeType isEqualToString:@"item"])
+        [_html appendString:@"<li>"];
+
+    // keyword
     if ([nodeType isEqualToString:@"keyword"]) {
         if ([properties[@"key"] hasPrefix:@"HTML_HEAD"]) {
             if (self.properties[properties[@"key"]]) {
@@ -358,53 +386,18 @@
                 self.properties[properties[@"key"]] = properties[@"value"];
         }
     }
-    if ([nodeType isEqualToString:@"special-block"])
-        [_html appendFormat:@"<%@>", properties[@"type"]];
-    if ([nodeType isEqualToString:@"headline"]) {
-        [self emitSection:properties];
-    }
-    if ([nodeType isEqualToString:@"paragraph"])
-        [_html appendString:@"<p>"];
-    if ([nodeType isEqualToString:@"italic"])
-        [_html appendString:@"<i>"];
-    if ([nodeType isEqualToString:@"bold"])
-        [_html appendString:@"<b>"];
-    if ([nodeType isEqualToString:@"underline"])
-        [_html appendString:@"<u>"];
-    if ([nodeType isEqualToString:@"strikethrough"])
-        [_html appendString:@"<s>"];
-    if ([nodeType isEqualToString:@"subscript"])
-        [_html appendString:@"<sub>"];
-    if ([nodeType isEqualToString:@"superscript"])
-        [_html appendString:@"<sup>"];
-    if ([nodeType isEqualToString:@"verbatim"])
-        [_html appendFormat:@"<code>%@", enc(properties[@"value"])];
-    if ([nodeType isEqualToString:@"code"])
-        [_html appendFormat:@"<code>%@", enc(properties[@"value"])];
-    if ([nodeType isEqualToString:@"example-block"])
-        [self emitExample:properties];
-    if ([nodeType isEqualToString:@"src-block"])
-        [self emitSource:properties];
-    if ([nodeType isEqualToString:@"table"]) {
-        [self emitTable:properties];
-    }
-    if ([nodeType isEqualToString:@"table-row"])
-        [_html appendString:@"<tr>"];
-    if ([nodeType isEqualToString:@"table-cell"])
-        [_html appendString:@"<td>"];
-    if ([nodeType isEqualToString:@"entity"])
-        [_html appendString:properties[@"html"]];
-    if ([nodeType isEqualToString:@"ordered-list"])
-            [_html appendString:@"<ol>"];
-    if ([nodeType isEqualToString:@"unordered-list"])
-            [_html appendString:@"<ul>"];
-    if ([nodeType isEqualToString:@"item"])
-        [_html appendString:@"<li>"];
-    if ([nodeType isEqualToString:@"description-list"])
-        [_html appendString:@"<dl>"];
-    if ([nodeType isEqualToString:@"description-term"])
-        [_html appendFormat:@"<dt>%@</dt><dd>",
-            [self parseMarkupList:properties[@"tag"]]];
+
+    // latex-environment
+    if ([nodeType isEqualToString:@"latex-environment"])
+        [self emitLatex:properties];
+
+    // latex-fragment
+    if ([nodeType isEqualToString:@"latex-fragment"])
+        [_html appendString:properties[@"value"]];
+
+    // line-break
+
+    // link
     if ([nodeType isEqualToString:@"link"]) {
         if ([properties[@"type"] hasPrefix:@"http"]) {
             [_html appendFormat:@"<a href=\"%@\">",
@@ -421,34 +414,82 @@
                 [self makeIdentifier:properties[@"raw-link"]]];
         }
     }
-    if ([nodeType isEqualToString:@"fixed-width"])
-        [_html appendFormat:@"<pre>%@</pre>", enc(properties[@"value"])];
-    if ([nodeType isEqualToString:@"footnote-reference"])
-        [_html appendFormat:@"[<a href=\"#fn:%@\">%@</a>]",
-            properties[@"label"],
-            properties[@"label"]];
-    if ([nodeType isEqualToString:@"latex-environment"])
-        [self emitLatex:properties];
-    if ([nodeType isEqualToString:@"latex-fragment"])
-        [_html appendString:properties[@"value"]];
-    if ([nodeType isEqualToString:@"figure"]) {
-        [self emitFigure:properties];
-    }
-    if ([nodeType isEqualToString:@"horizontal-rule"])
-        [_html appendString:@"<hr>"];
+
+    // node-property
+
+    // ordered-list
+    if ([nodeType isEqualToString:@"ordered-list"])
+        [_html appendString:@"<ol>"];
+
+    // paragraph
+    if ([nodeType isEqualToString:@"paragraph"])
+        [_html appendString:@"<p>"];
+
+    // plain-list
+    // plain-text
+    // planning
+    // property-drawer
+
+    // quote-block
     if ([nodeType isEqualToString:@"quote-block"])
         [_html appendString:@"<blockquote>"];
+
+    // radio-target
+    // section
+
+    // special-block
+    if ([nodeType isEqualToString:@"special-block"])
+        [_html appendFormat:@"<%@>", properties[@"type"]];
+
+    // src-block
+    if ([nodeType isEqualToString:@"src-block"])
+        [self emitSource:properties];
+
+    // statistics-cookie
+
+    // strike-through
+    if ([nodeType isEqualToString:@"strikethrough"])
+        [_html appendString:@"<s>"];
+
+    // subscript
+    if ([nodeType isEqualToString:@"subscript"])
+        [_html appendString:@"<sub>"];
+
+    // superscript
+    if ([nodeType isEqualToString:@"superscript"])
+        [_html appendString:@"<sup>"];
+
+    // table
+    if ([nodeType isEqualToString:@"table"])
+        [self emitTable:properties];
+
+    // table-cell
+    if ([nodeType isEqualToString:@"table-cell"])
+        [_html appendString:@"<td>"];
+
+    // table-row
+    if ([nodeType isEqualToString:@"table-row"])
+        [_html appendString:@"<tr>"];
+
+    // target
+    // template
+    // timestamp
+
+    // underline
+    if ([nodeType isEqualToString:@"underline"])
+        [_html appendString:@"<u>"];
+
+    // unordered-list
+    if ([nodeType isEqualToString:@"unordered-list"])
+        [_html appendString:@"<ul>"];
+
+    // verbatim
+    if ([nodeType isEqualToString:@"verbatim"])
+        [_html appendFormat:@"<code>%@", enc(properties[@"value"])];
+
+    // verse-block
     if ([nodeType isEqualToString:@"verse-block"])
         [_html appendString:@"<blockquote><pre>"];
-    if ([nodeType isEqualToString:@"center-block"])
-        [_html appendString:@"<center>"];
-    if ([nodeType isEqualToString:@"footnote-headline"]) {
-        [self emitFooter:properties];
-    }
-    if ([nodeType isEqualToString:@"footnote-definition"])
-        [_html appendFormat:@"<li id=\"fn:%@\">[%@] ",
-            properties[@"label"],
-            properties[@"label"]];
 }
 
 - (void)parser:(HOOrgParser *)parser
@@ -458,62 +499,157 @@
 {
     log_indent(--_depth, "node end %s\n", nodeType.UTF8String);
 
-    if ([nodeType isEqualToString:@"special-block"])
-        [_html appendFormat:@"</%@>", properties[@"type"]];
-    if ([nodeType isEqualToString:@"headline"])
-        [_html appendFormat:@"</section>\n"];
-    if ([nodeType isEqualToString:@"paragraph"])
-        [_html appendString:@"</p>"];
-    if ([nodeType isEqualToString:@"italic"])
-        [_html appendString:@"</i>"];
+    // bold
     if ([nodeType isEqualToString:@"bold"])
         [_html appendString:@"</b>"];
-    if ([nodeType isEqualToString:@"underline"])
-        [_html appendString:@"</u>"];
-    if ([nodeType isEqualToString:@"strikethrough"])
-        [_html appendString:@"</s>"];
-    if ([nodeType isEqualToString:@"subscript"])
-        [_html appendString:@"</sub>"];
-    if ([nodeType isEqualToString:@"superscript"])
-        [_html appendString:@"</sup>"];
-    if ([nodeType isEqualToString:@"verbatim"])
-        [_html appendString:@"</code>"];
-    if ([nodeType isEqualToString:@"code"])
-        [_html appendString:@"</code>"];
-    if ([nodeType isEqualToString:@"example-block"])
-        [_html appendString:@"</pre>"];
-    if ([nodeType isEqualToString:@"src-block"])
-        [_html appendString:@"</pre>"];
-    if ([nodeType isEqualToString:@"table"])
-        [_html appendString:@"</table>"];
-    if ([nodeType isEqualToString:@"table-row"])
-        [_html appendString:@"</tr>"];
-    if ([nodeType isEqualToString:@"table-cell"])
-        [_html appendString:@"</td>"];
-    if ([nodeType isEqualToString:@"ordered-list"])
-        [_html appendString:@"</ol>"];
-    if ([nodeType isEqualToString:@"unordered-list"])
-        [_html appendString:@"</ul>"];
-    if ([nodeType isEqualToString:@"item"])
-        [_html appendString:@"</li>"];
-    if ([nodeType isEqualToString:@"description-list"])
-        [_html appendString:@"</dl>"];
-    if ([nodeType isEqualToString:@"description-term"])
-        [_html appendString:@"</dd>"];
-    if ([nodeType isEqualToString:@"link"])
-        [_html appendString:@"</a>"];
-    if ([nodeType isEqualToString:@"figure"])
-        [_html appendString:@"</figure>"];
-    if ([nodeType isEqualToString:@"quote-block"])
-        [_html appendString:@"</blockquote>"];
-    if ([nodeType isEqualToString:@"verse-block"])
-        [_html appendString:@"</pre></blockquote>"];
+
+    // center-block
     if ([nodeType isEqualToString:@"center-block"])
         [_html appendString:@"</center>"];
+
+    // clock
+
+    // code
+    if ([nodeType isEqualToString:@"code"])
+        [_html appendString:@"</code>"];
+
+    // description-list
+    if ([nodeType isEqualToString:@"description-list"])
+        [_html appendString:@"</dl>"];
+
+    // description-term
+    if ([nodeType isEqualToString:@"description-term"])
+        [_html appendString:@"</dd>"];
+
+    // drawer
+    // dynamic-block
+    // entity
+
+    // example-block
+    if ([nodeType isEqualToString:@"example-block"])
+        [_html appendString:@"</pre>"];
+
+    // export-block
+    // export-snippet
+
+    // figure
+    if ([nodeType isEqualToString:@"figure"])
+        [_html appendString:@"</figure>"];
+
+    // fixed-width
+
+    // footnote-definition
+    
+    // footnote-headline
     if ([nodeType isEqualToString:@"footnote-headline"])
         [_html appendString:@"</ul></footer>"];
+
+    // footnote-reference
     if ([nodeType isEqualToString:@"footnote-definition"])
         [_html appendFormat:@"</li>"];
+
+    // headline
+    if ([nodeType isEqualToString:@"headline"])
+        [_html appendFormat:@"</section>\n"];
+
+    // horizontal-rule
+    // inline-src-block
+    // inlinetask
+    // inner-template
+
+    // italic
+    if ([nodeType isEqualToString:@"italic"])
+        [_html appendString:@"</i>"];
+
+    // item
+    if ([nodeType isEqualToString:@"item"])
+        [_html appendString:@"</li>"];
+
+    // keyword
+
+    // latex-environment
+    // latex-fragment
+    // line-break
+
+    // link
+    if ([nodeType isEqualToString:@"link"])
+        [_html appendString:@"</a>"];
+
+    // node-property
+
+    // ordered-list
+    if ([nodeType isEqualToString:@"ordered-list"])
+        [_html appendString:@"</ol>"];
+
+    // paragraph
+    if ([nodeType isEqualToString:@"paragraph"])
+        [_html appendString:@"</p>"];
+
+    // plain-list
+    // plain-text
+    // planning
+    // property-drawer
+
+    // quote-block
+    if ([nodeType isEqualToString:@"quote-block"])
+        [_html appendString:@"</blockquote>"];
+
+    // radio-target
+    // section
+
+    // special-block
+    if ([nodeType isEqualToString:@"special-block"])
+        [_html appendFormat:@"</%@>", properties[@"type"]];
+
+    // src-block
+    if ([nodeType isEqualToString:@"src-block"])
+        [_html appendString:@"</pre>"];
+
+    // statistics-cookie
+    
+    // strike-through
+    if ([nodeType isEqualToString:@"strikethrough"])
+        [_html appendString:@"</s>"];
+
+    // subscript
+    if ([nodeType isEqualToString:@"subscript"])
+        [_html appendString:@"</sub>"];
+
+    // superscript
+    if ([nodeType isEqualToString:@"superscript"])
+        [_html appendString:@"</sup>"];
+
+    // table
+    if ([nodeType isEqualToString:@"table"])
+        [_html appendString:@"</table>"];
+
+    // table-cell
+    if ([nodeType isEqualToString:@"table-cell"])
+        [_html appendString:@"</td>"];
+
+    // table-row
+    if ([nodeType isEqualToString:@"table-row"])
+        [_html appendString:@"</tr>"];
+
+    // target
+    // template
+    // timestamp
+
+    // underline
+    if ([nodeType isEqualToString:@"underline"])
+        [_html appendString:@"</u>"];
+
+    // unordered-list
+    if ([nodeType isEqualToString:@"unordered-list"])
+        [_html appendString:@"</ul>"];
+
+    // verbatim
+    if ([nodeType isEqualToString:@"verbatim"])
+        [_html appendString:@"</code>"];
+
+    // verse-block
+    if ([nodeType isEqualToString:@"verse-block"])
+        [_html appendString:@"</pre></blockquote>"];
 
     if (space)
         [_html appendString:@" "];

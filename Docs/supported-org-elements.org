@@ -59,6 +59,7 @@
 - [X] ordered-list
 - [X] unordered-list
 - [X] description-list
+- [X] description-term
 - [X] footnote-headline
 - [X] figure
 
