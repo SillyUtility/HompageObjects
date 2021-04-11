@@ -14,7 +14,7 @@
 - [X] example-block
 - [ ] export-block
 - [ ] export-snippet
-- [ ] fixed-width
+- [X] fixed-width
 - [X] footnote-definition
 - [X] footnote-reference
 - [X] headline
@@ -25,7 +25,7 @@
 - [X] italic
 - [X] item
 - [X] keyword
-- [ ] latex-environment
+- [X] latex-environment
 - [X] latex-fragment
 - [ ] line-break
 - [ ] link
@@ -87,3 +87,4 @@
   - fig:nil|fig:num
   - src:nil|src:num
   - eq:nil|eq:num
+  - hl:nil|hl:link|hl:#|hl:§

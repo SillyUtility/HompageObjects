@@ -216,6 +216,26 @@
             [self parseMarkupList:properties[@"caption"]]];
 }
 
+- (void)emitLatex:(NSDictionary<NSString *, id> *)properties
+{
+    NSString *name, *attrs;
+
+    attrs = [self parseAttributes:properties[@"attr_html"]];
+
+    if (properties[@"name"]) {
+        name = [self makeIdentifier:properties[@"name"]];
+        [_html appendFormat:@"<figure id=\"%@\"%@>", name, attrs];
+    } else
+        [_html appendFormat:@"<figure%@>", attrs];
+
+    if (properties[@"caption"])
+        [_html appendFormat:@"<figcaption>%@</figcaption>",
+            [self parseMarkupList:properties[@"caption"]]];
+
+    [_html appendString:properties[@"value"]];
+    [_html appendString:@"</figure>"];
+}
+
 - (void)emitFigure:(NSDictionary<NSString *, id> *)properties
 {
     NSString *name, *attrs;
@@ -230,7 +250,7 @@
 
     if (properties[@"caption"])
         [_html appendFormat:@"<figcaption>%@</figcaption>",
-         [self parseMarkupList:properties[@"caption"]]];
+            [self parseMarkupList:properties[@"caption"]]];
 }
 
 - (void)emitExample:(NSDictionary<NSString *, id> *)properties
@@ -258,67 +278,67 @@
     [_html appendString:@"<ul>"];
 }
 
-// bold
-// center-block
-// clock
-// code
-// description-list
-// drawer
-// dynamic-block
-// entity
-// example-block
-// export-block
-// export-snippet
-// figure
-// fixed-width
-// footnote-definition
-// footnote-headline
-// footnote-reference
-// headline
-// horizontal-rule
-// inline-src-block
-// inlinetask
-// inner-template
-// italic
-// item
-// keyword
-// latex-environment
-// latex-fragment
-// line-break
-// link
-// node-property
-// ordered-list
-// paragraph
-// plain-list
-// plain-text
-// planning
-// property-drawer
-// quote-block
-// radio-target
-// section
-// special-block
-// src-block
-// statistics-cookie
-// strike-through
-// subscript
-// superscript
-// table
-// table-cell
-// table-row
-// target
-// template
-// timestamp
-// underline
-// unordered-list
-// verbatim
-// verse-block
-
 - (void)parser:(HOOrgParser *)parser
     didStartNode:(NSString *)nodeType
     reference:(NSString *)ref
     properties:(NSDictionary<NSString *, id> *)properties
 {
     log_indent(_depth++, "node start %s\n", nodeType.UTF8String);
+    
+    // bold
+    // center-block
+    // clock
+    // code
+    // description-list
+    // drawer
+    // dynamic-block
+    // entity
+    // example-block
+    // export-block
+    // export-snippet
+    // figure
+    // fixed-width
+    // footnote-definition
+    // footnote-headline
+    // footnote-reference
+    // headline
+    // horizontal-rule
+    // inline-src-block
+    // inlinetask
+    // inner-template
+    // italic
+    // item
+    // keyword
+    // latex-environment
+    // latex-fragment
+    // line-break
+    // link
+    // node-property
+    // ordered-list
+    // paragraph
+    // plain-list
+    // plain-text
+    // planning
+    // property-drawer
+    // quote-block
+    // radio-target
+    // section
+    // special-block
+    // src-block
+    // statistics-cookie
+    // strike-through
+    // subscript
+    // superscript
+    // table
+    // table-cell
+    // table-row
+    // target
+    // template
+    // timestamp
+    // underline
+    // unordered-list
+    // verbatim
+    // verse-block
 
     if ([nodeType isEqualToString:@"keyword"]) {
         if ([properties[@"key"] hasPrefix:@"HTML_HEAD"]) {
@@ -401,10 +421,14 @@
                 [self makeIdentifier:properties[@"raw-link"]]];
         }
     }
+    if ([nodeType isEqualToString:@"fixed-width"])
+        [_html appendFormat:@"<pre>%@</pre>", enc(properties[@"value"])];
     if ([nodeType isEqualToString:@"footnote-reference"])
         [_html appendFormat:@"[<a href=\"#fn:%@\">%@</a>]",
             properties[@"label"],
             properties[@"label"]];
+    if ([nodeType isEqualToString:@"latex-environment"])
+        [self emitLatex:properties];
     if ([nodeType isEqualToString:@"latex-fragment"])
         [_html appendString:properties[@"value"]];
     if ([nodeType isEqualToString:@"figure"]) {
