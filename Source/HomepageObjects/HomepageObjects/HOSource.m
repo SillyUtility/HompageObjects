@@ -278,6 +278,33 @@
     [_html appendString:@"<ul>"];
 }
 
+- (void)emitLink:(NSDictionary<NSString *,id> *)properties
+{
+    if ([properties[@"type"] hasPrefix:@"http"]) {
+        [_html appendFormat:@"<a href=\"%@\">",
+            properties[@"raw-link"]];
+        if ([properties[@"format"] isEqualToString:@"plain"])
+            [_html appendString:properties[@"raw-link"]];
+    }
+
+    if ([properties[@"type"] isEqualToString:@"file"]) {
+        if ([properties[@"is-inline-image"] boolValue]) {
+            [_html appendFormat:@"<img src=\"%@\">",
+                properties[@"raw-link"]];
+        }
+    }
+
+    if ([properties[@"type"] isEqualToString:@"fuzzy"]) {
+        [_html appendFormat:@"<a href=\"#%@\">",
+            [self makeIdentifier:properties[@"raw-link"]]];
+    }
+
+    if ([properties[@"type"] isEqualToString:@"radio"]) {
+        [_html appendFormat:@"<a href=\"#%@\">",
+            [self makeIdentifier:properties[@"raw-link"]]];
+    }
+}
+
 - (void)parser:(HOOrgParser *)parser
     didStartNode:(NSString *)nodeType
     reference:(NSString *)ref
@@ -408,23 +435,7 @@
 
     // link
     if ([nodeType isEqualToString:@"link"]) {
-        if ([properties[@"type"] hasPrefix:@"http"]) {
-            [_html appendFormat:@"<a href=\"%@\">",
-                properties[@"raw-link"]];
-            if ([properties[@"format"] isEqualToString:@"plain"])
-                [_html appendString:properties[@"raw-link"]];
-        } else if ([properties[@"type"] isEqualToString:@"file"]) {
-            if ([properties[@"is-inline-image"] boolValue]) {
-                [_html appendFormat:@"<img src=\"%@\">",
-                    properties[@"raw-link"]];
-            }
-        } else if ([properties[@"type"] isEqualToString:@"fuzzy"]) {
-            [_html appendFormat:@"<a href=\"#%@\">",
-                [self makeIdentifier:properties[@"raw-link"]]];
-        } else if ([properties[@"type"] isEqualToString:@"radio"]) {
-            [_html appendFormat:@"<a href=\"#%@\">",
-                [self makeIdentifier:properties[@"raw-link"]]];
-        }
+        [self emitLink:properties];
     }
 
     // node-property
