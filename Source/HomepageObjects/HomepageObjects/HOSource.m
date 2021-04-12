@@ -458,6 +458,10 @@
         [_html appendString:@"<blockquote>"];
 
     // radio-target
+    if ([nodeType isEqualToString:@"radio-target"])
+        [_html appendFormat:@"<a id=\"%@\">",
+            [self makeIdentifier:properties[@"value"]]];
+
     // section
 
     // special-block
@@ -495,6 +499,10 @@
         [_html appendString:@"<tr>"];
 
     // target
+    if ([nodeType isEqualToString:@"target"])
+        [_html appendFormat:@"<a id=\"%@\">",
+            [self makeIdentifier:properties[@"value"]]];
+
     // template
     // timestamp
 
@@ -618,6 +626,9 @@
         [_html appendString:@"</blockquote>"];
 
     // radio-target
+    if ([nodeType isEqualToString:@"radio-target"])
+        [_html appendString:@"</a>"];
+
     // section
 
     // special-block
@@ -655,6 +666,9 @@
         [_html appendString:@"</tr>"];
 
     // target
+    if ([nodeType isEqualToString:@"target"])
+        [_html appendString:@"</a>"];
+
     // template
     // timestamp
 
